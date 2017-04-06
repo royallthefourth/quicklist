@@ -6,7 +6,7 @@ use EasyCSRF\EasyCSRF;
 use EasyCSRF\NativeSessionProvider;
 use Psr\Http\Message\ResponseInterface;
 use RoyallTheFourth\QuickList\Action\ActionInterface;
-use function RoyallTheFourth\QuickList\Db\MailingList\getNameFromHash;
+use function RoyallTheFourth\QuickList\Db\MailingList\getNameFromUnsubHash;
 use RoyallTheFourth\QuickList\Layout\Unsubscribe\Landing;
 use RoyallTheFourth\SmoothPdo\DataObject;
 use Zend\Diactoros\Response\HtmlResponse;
@@ -30,7 +30,7 @@ final class Get implements ActionInterface
     {
         return new HtmlResponse(
             (new Landing(
-                getNameFromHash($this->db, $this->hash),
+                getNameFromUnsubHash($this->db, $this->hash),
                 $this->hash,
                 $this->csrf,
                 $this->webPrefix

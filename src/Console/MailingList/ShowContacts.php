@@ -14,10 +14,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class ShowContacts extends Command
 {
     private $db;
+    private $timezone;
 
-    public function __construct(DataObject $db)
+    public function __construct(DataObject $db, \DateTimeZone $timezone)
     {
         $this->db = $db;
+        $this->timezone = $timezone;
         parent::__construct();
     }
 
@@ -26,15 +28,22 @@ class ShowContacts extends Command
         $this
             ->setName('list:contact:list')
             ->setDescription('Outputs current contacts on a mailing list.')
-            ->addArgument('list-name', InputArgument::REQUIRED, 'The name of the mailing list.');
+            ->addArgument('list-id', InputArgument::REQUIRED, 'The ID of the mailing list.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         (new SymfonyStyle($input, $output))
             ->table(
-                ['id', 'name'],
-                generatorToArray(MailingList\allContacts($this->db, $input->getArgument('list-name')))
+                ['id', 'email', 'date_added'],
+                array_map(function ($row) {
+                    return [
+                        $row['id'],
+                        $row['email'],
+                        (new \DateTimeImmutable($row['date_added'], new \DateTimeZone('UTC')))
+                            ->setTimezone($this->timezone)->format('Y-m-d H:i:s')
+                    ];
+                }, generatorToArray(MailingList\allContacts($this->db, $input->getArgument('list-id'))))
             );
     }
 }

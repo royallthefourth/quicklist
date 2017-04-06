@@ -17,8 +17,7 @@ $db = Db\Common\connection();
 $mailer = RoyallTheFourth\QuickList\Common\mailer($config);
 $app = new Application('quicklist', '1.0');
 
-// TODO now that optin handler works, try a regular message
-// TODO once regular message works, try an unsubscribe
+// TODO write automated test for each console command
 
 $app->add(new Contact\Add($db));
 $app->add(new Contact\AddBulk($db));
@@ -32,7 +31,7 @@ $app->add(new MailingList\Add($db));
 $app->add(new MailingList\AddContact($db, $config['site_domain']));
 $app->add(new MailingList\RemoveContact($db));
 $app->add(new MailingList\Show($db));
-$app->add(new MailingList\ShowContacts($db));
+$app->add(new MailingList\ShowContacts($db, new \DateTimeZone($config['default_timezone'])));
 
 $app->add(new Message\Add($db));
 $app->add(new Message\Show($db));

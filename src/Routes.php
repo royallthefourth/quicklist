@@ -20,9 +20,9 @@ function loggedOut(string $webPrefix): array
 
 function common(string $webPrefix): array
 {
-    // TODO add unsubscribe post route
     return [
         ['GET', "{$webPrefix}/unsubscribe/{hash}", Action\Unsubscribe\Get::class],
+        ['POST', "{$webPrefix}/unsubscribe", Action\Unsubscribe\Post::class],
         ['GET', "{$webPrefix}/optin/{hash}", Action\Optin\Get::class],
         ['POST', "{$webPrefix}/optin", Action\Optin\Post::class]
     ];

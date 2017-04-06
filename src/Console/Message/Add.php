@@ -29,8 +29,10 @@ class Add extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln('Enter your message:');
+
         $lines = [];
-        while ($line = readline('Enter your message:')) {
+        while ($line = readline()) {
             $lines[] = $line;
         }
 

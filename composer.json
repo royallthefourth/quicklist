@@ -10,7 +10,6 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "aura/auth": "^2.0",
         "gilbitron/easycsrf": "^1.0",
         "nikic/fast-route": "^1.2",
         "phpmailer/phpmailer": "^5.2",

@@ -27,14 +27,14 @@ final class Landing implements LayoutInterface
 
     public function render(): string
     {
-        return new Base(
+        return (new Base(
             "Unsubscribe from {$this->listName}",
             (new ElementSet())
                 ->add(
                     (new Form())
                         ->withMethod('POST')
                         ->withAction("{$this->prefix}/unsubscribe")
-                        ->withChild(new Text("Click the button to unsubscribe from {$this->listName}"))
+                        ->withChild(new Text("If you wish to unsubscribe from {$this->listName}, click the button: "))
                         ->withChild(
                             (new Input())
                                 ->withType('hidden')
@@ -49,9 +49,9 @@ final class Landing implements LayoutInterface
                         )
                         ->withChild(
                             (new Button())
-                            ->withChild(new Text('Unsubscribe'))
+                                ->withChild(new Text('Unsubscribe'))
                         )
                 )
-        );
+        ))->render();
     }
 }

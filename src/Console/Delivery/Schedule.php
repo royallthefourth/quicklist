@@ -35,7 +35,7 @@ class Schedule extends Command
             $this->db,
             $input->getArgument('message-id'),
             $input->getArgument('list-id'),
-            $input->getArgument('send-date')
+            new \DateTimeImmutable($input->getArgument('send-date'))
         );
         $output->writeln('Scheduled delivery to ' . $recipients . ' recipients.');
     }
