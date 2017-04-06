@@ -1,0 +1,13 @@
+smtp:
+  hosts:
+   - example.com
+  port: 25
+  user: user
+  pass: pass
+  security: tls
+
+hourly_send_rate: 20
+site_domain: example.com
+from: newsletter@example.com
+web_prefix: ''
+default_timezone: UTC # see list: http://php.net/manual/en/timezones.php
