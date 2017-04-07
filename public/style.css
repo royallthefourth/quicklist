@@ -1,5 +1,4 @@
 html {
-    /* TODO create a postal-themed color scheme */
     background-color: white;
 }
 
@@ -13,6 +12,20 @@ body > * {
 
 a {
     color: lightgray;
+}
+
+div#error {
+    margin: 0 auto;
+}
+
+div#error h1 {
+    font-size: 6rem;
+    text-align: center;
+}
+
+div#error p {
+    font-size: 4rem;
+    text-align: center;
 }
 
 h1 a, h2 a {

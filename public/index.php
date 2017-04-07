@@ -23,7 +23,11 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     }
 });
 
-[$disposition, $handlerType, $vars] = $dispatcher->dispatch($request->getMethod(), $request->getRequestTarget());
+$dispatch = $dispatcher->dispatch($request->getMethod(), $request->getRequestTarget());
+
+$disposition = $dispatch[0];
+$handlerType = $dispatch[1] ?? null;
+$vars = $dispatch[2] ?? [];
 
 foreach ($vars as $name => $value) {
     $deps[":{$name}"] = $value;
@@ -32,9 +36,7 @@ foreach ($vars as $name => $value) {
 switch ($disposition) {
     case FastRoute\Dispatcher::NOT_FOUND:
     case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-        echo '404';
-        // TODO add 404 GET action
-        break;
+        $handlerType = RoyallTheFourth\QuickList\Action\NotFound\Get::class; // this fall-through is intentional
     case FastRoute\Dispatcher::FOUND:
         /** @var \RoyallTheFourth\QuickList\Action\ActionInterface $handler */
         (new \Zend\Diactoros\Response\SapiEmitter())

@@ -6,7 +6,7 @@ use RoyallTheFourth\HtmlDocument\Element\Text;
 use RoyallTheFourth\HtmlDocument\Set\ElementSet;
 use RoyallTheFourth\QuickList\Layout\Base\LoggedIn;
 
-class Dashboard implements LayoutInterface
+final class Dashboard implements LayoutInterface
 {
     private $webPrefix;
 
