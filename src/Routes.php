@@ -6,9 +6,10 @@ use RoyallTheFourth\QuickList\Action;
 
 function loggedIn(string $webPrefix): array
 {
-    // TODO / points to dashboard
-    // TODO logout page
-    return [];
+    return [
+        ['GET', "{$webPrefix}/", Action\Dashboard\Get::class],
+        ['GET', "{$webPrefix}/logout", Action\Logout\Get::class]
+    ];
 }
 
 function loggedOut(string $webPrefix): array

@@ -7,7 +7,7 @@ use RoyallTheFourth\HtmlDocument\Element\Form;
 use RoyallTheFourth\HtmlDocument\Element\Input;
 use RoyallTheFourth\HtmlDocument\Element\Text;
 use RoyallTheFourth\HtmlDocument\Set\ElementSet;
-use RoyallTheFourth\QuickList\Layout\Base;
+use RoyallTheFourth\QuickList\Layout\Base\LoggedOut;
 use RoyallTheFourth\QuickList\Layout\LayoutInterface;
 
 final class Landing implements LayoutInterface
@@ -27,7 +27,7 @@ final class Landing implements LayoutInterface
 
     public function render(): string
     {
-        return (new Base(
+        return (new LoggedOut(
             "Subscribe to {$this->listName}",
             (new ElementSet())
                 ->add(

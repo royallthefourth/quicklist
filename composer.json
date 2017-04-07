@@ -30,12 +30,14 @@
             "RoyallTheFourth\\QuickList\\": "src"
         },
         "files": [
-            "src/Common.php",
             "src/Db/Common.php",
             "src/Db/Contact.php",
             "src/Db/Delivery.php",
             "src/Db/MailingList.php",
             "src/Db/Message.php",
+            "src/Db/User.php",
+            "src/Layout/Partial.php",
+            "src/Common.php",
             "src/Delivery.php",
             "src/MailingList.php",
             "src/Message.php",

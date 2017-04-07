@@ -7,23 +7,26 @@ use RoyallTheFourth\HtmlDocument\Element;
 use RoyallTheFourth\HtmlDocument\Element\Input;
 use RoyallTheFourth\HtmlDocument\Element\Text;
 use RoyallTheFourth\HtmlDocument\Set\ElementSet;
-use RoyallTheFourth\QuickList\Layout\Base;
+use RoyallTheFourth\QuickList\Layout\Base\LoggedOut;
 use RoyallTheFourth\QuickList\Layout\LayoutInterface;
 
 final class Form implements LayoutInterface
 {
     private $csrf;
+    private $flash;
     private $prefix;
 
     public function __construct(string $csrf, string $prefix)
     {
         $this->csrf = $csrf;
         $this->prefix = $prefix;
+        $this->flash = $_SESSION['flash'] ?? '';
+        unset($_SESSION['flash']);
     }
 
     public function render(): string
     {
-        return (new Base(
+        return (new LoggedOut(
             'Login',
             (new ElementSet())
                 ->add(
@@ -65,7 +68,8 @@ final class Form implements LayoutInterface
                                 ->withChild(new Text('Login'))
                         )
                         ->withId('login')
-                )
+                ),
+            $this->flash
         )
         )->render();
     }

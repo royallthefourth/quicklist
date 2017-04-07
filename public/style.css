@@ -35,10 +35,43 @@ header {
 
 header a {
     color: #212121;
-    font-family: sans-serif;
-    font-size: 4.5rem;
+    font-size: 2rem;
     text-align: left;
     text-decoration: none;
+}
+
+header nav {
+    margin-top: 1rem;
+}
+
+header nav ul {
+    display: flex;
+    list-style: none;
+    margin-top: 0;
+    padding: 0;
+}
+
+header nav ul li {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+header nav ul li a {
+    display: block;
+    text-align: center;
+}
+
+div#flash {
+    background-color: burlywood;
+    font-family: sans-serif;
+    font-size: 2rem;
+    margin: 0 auto 1.5rem;
+    max-width: 100%;
+    text-align: center;
+    width: 42rem;
 }
 
 form#login {

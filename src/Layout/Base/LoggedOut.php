@@ -1,6 +1,6 @@
 <?php
 
-namespace RoyallTheFourth\QuickList\Layout;
+namespace RoyallTheFourth\QuickList\Layout\Base;
 
 use RoyallTheFourth\HtmlDocument\Document;
 use RoyallTheFourth\HtmlDocument\Element\Body;
@@ -15,18 +15,23 @@ use RoyallTheFourth\HtmlDocument\Element\Nav;
 use RoyallTheFourth\HtmlDocument\Element\Text;
 use RoyallTheFourth\HtmlDocument\Element\Title;
 use RoyallTheFourth\HtmlDocument\Set\ElementSet;
+use RoyallTheFourth\QuickList\Layout\LayoutInterface;
 
-final class Base implements LayoutInterface
+final class LoggedOut implements LayoutInterface
 {
-    private $document;
-    private $title;
     private $body;
+    private $document;
+    private $flash;
+    private $nav;
+    private $title;
 
-    public function __construct(string $title, ElementSet $body)
+    public function __construct(string $title, ElementSet $body, string $flash = '', ElementSet $nav = null)
     {
         $this->document = new Document();
         $this->title = htmlspecialchars($title);
         $this->body = $body;
+        $this->nav = $nav ?? new ElementSet();
+        $this->flash = flash($flash);
     }
 
     public function render(): string
@@ -59,9 +64,9 @@ final class Base implements LayoutInterface
                         ->withChild(
                             (new Header())
                                 ->withChild(new Text('quicklist'))
-                                ->withChild(new Nav())
+                                ->withChild(new Nav(null, $this->nav))
                         )
-                        ->withChild(new Main(null, $this->body))
+                        ->withChild(new Main(null, $this->flash->merge($this->body)))
                         ->withChild(new Footer())
                 )
         )->render();
