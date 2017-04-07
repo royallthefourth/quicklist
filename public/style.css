@@ -41,6 +41,28 @@ header a {
     text-decoration: none;
 }
 
+form#login {
+    font-size: 2rem;
+    margin: 0 auto;
+    max-width: 12rem;
+}
+
+form#login * {
+    display: block;
+}
+
+form#login input {
+    margin-bottom: 1rem;
+}
+
+form#login button {
+    font-size: 1.5rem;
+}
+
+label {
+    font-family: sans-serif;
+}
+
 footer {
     text-align: center;
     font-size: 36px;

@@ -15,8 +15,7 @@ $deps = [
     ':request' => $request
 ];
 
-// TODO check for loggedIn status
-$routes = RoyallTheFourth\QuickList\Routes\common($config['web_prefix']);
+$routes = RoyallTheFourth\QuickList\Routes\common($config['web_prefix'], isset($_SESSION['userId']));
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) use ($routes) {
     foreach ($routes as $route) {

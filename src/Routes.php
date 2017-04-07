@@ -13,17 +13,26 @@ function loggedIn(string $webPrefix): array
 
 function loggedOut(string $webPrefix): array
 {
-    // TODO / points to login page
-    // merge this function's output with common() and return
-    return [];
+    return [
+        ['GET', "{$webPrefix}/", Action\Login\Get::class],
+        ['POST', "{$webPrefix}/login", Action\Login\Post::class]
+    ];
 }
 
-function common(string $webPrefix): array
+function common(string $webPrefix, bool $loggedIn): array
 {
-    return [
+    $routes = [
         ['GET', "{$webPrefix}/unsubscribe/{hash}", Action\Unsubscribe\Get::class],
         ['POST', "{$webPrefix}/unsubscribe", Action\Unsubscribe\Post::class],
         ['GET', "{$webPrefix}/optin/{hash}", Action\Optin\Get::class],
         ['POST', "{$webPrefix}/optin", Action\Optin\Post::class]
     ];
+
+    if ($loggedIn) {
+        $routes = array_merge($routes, loggedIn($webPrefix));
+    } else {
+        $routes = array_merge($routes, loggedOut($webPrefix));
+    }
+
+    return $routes;
 }

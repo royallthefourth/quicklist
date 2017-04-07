@@ -17,8 +17,6 @@ $db = Db\Common\connection();
 $mailer = RoyallTheFourth\QuickList\Common\mailer($config);
 $app = new Application('quicklist', '1.0');
 
-// TODO write automated test for each console command
-
 $app->add(new Contact\Add($db));
 $app->add(new Contact\AddBulk($db));
 $app->add(new Contact\Show($db));   // these use the identifier "show" internally because "list" is reserved
