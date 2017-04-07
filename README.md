@@ -1,6 +1,8 @@
 # Quicklist
 Quicklist is a mailing list manager that's designed to be as straightforward as possible.
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/royallthefourth/quicklist/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/royallthefourth/quicklist/?branch=master)
+
 ## Features
 * Simple, no-configuration SQLite storage
 * Command line and web interfaces
