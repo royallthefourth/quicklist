@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AddContact extends Command
+class OptInContact extends Command
 {
     private $db;
     private $domain;
@@ -24,15 +24,15 @@ class AddContact extends Command
     protected function configure()
     {
         $this
-            ->setName('list:contact:add')
-            ->setDescription('Adds a contact to a mailing list.')
+            ->setName('list:contact:optin')
+            ->setDescription('Adds an existing contact to a mailing list and sends an opt-in message.')
             ->addArgument('list-name', InputArgument::REQUIRED, 'The name of the mailing list.')
             ->addArgument('email', InputArgument::REQUIRED, 'The email of the recipient.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        MailingList\addContact(
+        MailingList\optIn(
             $this->db,
             $input->getArgument('list-name'),
             $input->getArgument('email'),

@@ -4,10 +4,10 @@ namespace RoyallTheFourth\QuickList\MailingList;
 
 use RoyallTheFourth\SmoothPdo\DataObject;
 
-function addContact(DataObject $db, string $listName, string $email, string $domain): void
+function optIn(DataObject $db, string $listName, string $email, string $domain): void
 {
     $hash = sha1($listName . $email . time());
-    \RoyallTheFourth\QuickList\Db\MailingList\addContact($db, $listName, $email, $hash);
+    \RoyallTheFourth\QuickList\Db\MailingList\optInContact($db, $listName, $email, $hash);
 
     $body = <<<body
 You've signed up for {$listName}.

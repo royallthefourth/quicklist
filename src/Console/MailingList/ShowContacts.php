@@ -27,7 +27,7 @@ class ShowContacts extends Command
     {
         $this
             ->setName('list:contact:list')
-            ->setDescription('Outputs current contacts on a mailing list.')
+            ->setDescription('Lists current contacts on a mailing list.')
             ->addArgument('list-id', InputArgument::REQUIRED, 'The ID of the mailing list.');
     }
 

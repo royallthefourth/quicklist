@@ -38,15 +38,6 @@ function add(DataObject $db, string $name): void
         ->execute([$name]);
 }
 
-function addContact(DataObject $db, string $listName, string $email, string $hash): void
-{
-    $db->prepare('INSERT OR IGNORE INTO list_contacts(list_id, contact_id, optin_hash) VALUES(
-  (SELECT ROWID FROM lists WHERE name = ?),
-  (SELECT ROWID FROM contacts WHERE email = ?),
-  ?)')
-        ->execute([$listName, $email, $hash]);
-}
-
 function getNameFromOptinHash(DataObject $db, string $hash): string
 {
     return $db->prepare('SELECT name
@@ -66,6 +57,15 @@ FROM lists L
 WHERE D.unsub_hash = ?')
         ->execute([$hash])
         ->fetch(\PDO::FETCH_ASSOC)['name'];
+}
+
+function optInContact(DataObject $db, string $listName, string $email, string $hash): void
+{
+    $db->prepare('INSERT OR IGNORE INTO list_contacts(list_id, contact_id, optin_hash) VALUES(
+  (SELECT ROWID FROM lists WHERE name = ?),
+  (SELECT ROWID FROM contacts WHERE email = ?),
+  ?)')
+        ->execute([$listName, $email, $hash]);
 }
 
 function removeContact(DataObject $db, string $listName, string $email): void

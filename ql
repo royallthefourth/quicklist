@@ -26,7 +26,7 @@ $app->add(new Delivery\Schedule($db));
 $app->add(new Delivery\Show($db, new \DateTimeZone($config['default_timezone'])));
 
 $app->add(new MailingList\Add($db));
-$app->add(new MailingList\AddContact($db, $config['site_domain']));
+$app->add(new MailingList\OptInContact($db, $config['site_domain']));
 $app->add(new MailingList\RemoveContact($db));
 $app->add(new MailingList\Show($db));
 $app->add(new MailingList\ShowContacts($db, new \DateTimeZone($config['default_timezone'])));
