@@ -4,6 +4,29 @@ namespace RoyallTheFourth\QuickList\Db\MailingList;
 
 use RoyallTheFourth\SmoothPdo\DataObject;
 
+function add(DataObject $db, string $name): void
+{
+    $db->prepare('INSERT INTO lists(name) VALUES (?)')
+        ->execute([$name]);
+}
+
+function addContactBulkSkipOptIn(DataObject $db, int $listId, iterable $emails): void
+{
+    $addContact = $db->prepare('INSERT OR IGNORE INTO contacts(email) VALUES(?)');
+    $addToList = $db->prepare('INSERT OR IGNORE
+INTO list_contacts(list_id, contact_id, date_optin, optin_hash)
+VALUES(?,
+(SELECT ROWID
+FROM contacts
+WHERE email = ?),
+CURRENT_TIMESTAMP, \'skipped\');');
+
+    foreach ($emails as $email) {
+        $addContact->execute([$email]);
+        $addToList->execute([$listId, $email]);
+    }
+}
+
 function all(DataObject $db): \Generator
 {
     $stmt = $db->query('SELECT ROWID AS id, * FROM lists');
@@ -32,10 +55,13 @@ WHERE LC.list_id = ?
     }
 }
 
-function add(DataObject $db, string $name): void
+function getId(DataObject $db, string $name): int
 {
-    $db->prepare('INSERT INTO lists(name) VALUES (?)')
-        ->execute([$name]);
+    return $db->prepare('SELECT ROWID AS id
+    FROM lists
+    WHERE name = ?')
+        ->execute([$name])
+        ->fetch(\PDO::FETCH_ASSOC)['id'];
 }
 
 function getNameFromOptinHash(DataObject $db, string $hash): string
