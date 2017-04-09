@@ -18,7 +18,36 @@ function addBulk(DataObject $db, array $emails): void
     }
 }
 
-function all(\PDO $db): array
+function all(DataObject $db): iterable
 {
-    return $db->query('SELECT ROWID AS id, * FROM contacts')->fetchAll(\PDO::FETCH_ASSOC);
+    $stmt = $db->query('SELECT ROWID AS id, * FROM contacts');
+    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        yield $row;
+    }
+}
+
+function count(DataObject $db): int
+{
+    return $db->query('SELECT COUNT(ROWID) FROM contacts')->fetch(\PDO::FETCH_NUM)[0];
+}
+
+function oneById(DataObject $db, int $contactId): array
+{
+    return $db
+        ->prepare('SELECT ROWID AS id, * FROM contacts WHERE ROWID = ?')
+        ->execute([$contactId])
+        ->fetch(\PDO::FETCH_ASSOC);
+}
+
+function paginated(DataObject $db, int $page = 1, int $perPage = 50): iterable
+{
+    $stmt = $db->prepare('SELECT ROWID AS id, *
+FROM contacts
+ORDER BY date_added ASC
+LIMIT ? OFFSET ?')
+        ->execute([$perPage, ($page - 1) * $perPage]);
+
+    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        yield $row;
+    }
 }

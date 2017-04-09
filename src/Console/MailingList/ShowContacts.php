@@ -2,7 +2,7 @@
 
 namespace RoyallTheFourth\QuickList\Console\MailingList;
 
-use function RoyallTheFourth\QuickList\Common\generatorToArray;
+use function RoyallTheFourth\QuickList\Common\iterableToArray;
 use RoyallTheFourth\QuickList\Db\MailingList;
 use RoyallTheFourth\SmoothPdo\DataObject;
 use Symfony\Component\Console\Command\Command;
@@ -43,7 +43,7 @@ class ShowContacts extends Command
                         (new \DateTimeImmutable($row['date_added'], new \DateTimeZone('UTC')))
                             ->setTimezone($this->timezone)->format('Y-m-d H:i:s')
                     ];
-                }, generatorToArray(MailingList\allContacts($this->db, $input->getArgument('list-id'))))
+                }, iterableToArray(MailingList\allContacts($this->db, $input->getArgument('list-id'))))
             );
     }
 }

@@ -19,7 +19,8 @@ $app = new Application('quicklist', '1.0');
 
 $app->add(new Contact\Add($db));
 $app->add(new Contact\AddBulk($db));
-$app->add(new Contact\Show($db));   // these use the identifier "show" internally because "list" is reserved
+// these use the identifier "show" internally because "list" is reserved
+$app->add(new Contact\Show($db, new \DateTimeZone($config['default_timezone'])));
 
 $app->add(new Delivery\Process($db, $config, $mailer));
 $app->add(new Delivery\Schedule($db));

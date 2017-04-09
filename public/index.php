@@ -11,8 +11,9 @@ $request = \Zend\Diactoros\ServerRequestFactory::fromGlobals();
 
 $deps = [
     ':db' => $db,
-    ':webPrefix' => $config['web_prefix'],
-    ':request' => $request
+    ':request' => $request,
+    ':timezone' => new \DateTimeZone($config['default_timezone']),
+    ':webPrefix' => $config['web_prefix']
 ];
 
 $routes = RoyallTheFourth\QuickList\Routes\common($config['web_prefix'], isset($_SESSION['userId']));

@@ -8,7 +8,9 @@ function loggedIn(string $webPrefix): array
 {
     return [
         ['GET', "{$webPrefix}/", Action\Dashboard\Get::class],
-        ['GET', "{$webPrefix}/logout", Action\Logout\Get::class]
+        ['GET', "{$webPrefix}/logout", Action\Logout\Get::class],
+        ['GET', "{$webPrefix}/contact/{page:\\d+}", Action\Contact\Index\Get::class],
+        ['GET', "{$webPrefix}/contact/view/{contactId:\\d+}", Action\Contact\View\Get::class]
     ];
 }
 

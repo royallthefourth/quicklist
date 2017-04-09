@@ -27,7 +27,7 @@ CURRENT_TIMESTAMP, \'skipped\');');
     }
 }
 
-function all(DataObject $db): \Generator
+function all(DataObject $db): iterable
 {
     $stmt = $db->query('SELECT ROWID AS id, * FROM lists');
     while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
@@ -35,7 +35,20 @@ function all(DataObject $db): \Generator
     }
 }
 
-function allContacts(DataObject $db, int $listId): \Generator
+function allByContact(DataObject $db, int $contactId): iterable
+{
+    $stmt = $db
+        ->prepare('SELECT L.ROWID AS id, L.name, date_added, date_unsubscribed
+        FROM lists L
+        INNER JOIN list_contacts LC ON LC.contact_id = L.ROWID
+        WHERE LC.contact_id = ?')
+        ->execute([$contactId]);
+    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        yield $row;
+    }
+}
+
+function allContacts(DataObject $db, int $listId): iterable
 {
     $stmt = $db->prepare('
 SELECT

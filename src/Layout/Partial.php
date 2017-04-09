@@ -22,6 +22,10 @@ nav;
 
 function pagination(int $currentPage, int $total, int $perPage, string $path): string
 {
+    if ($total <= $perPage) {
+        return '';
+    }
+
     $links = '';
     for ($i = 1; ($i - 1) * $perPage < $total; $i++) {
         if ($i === $currentPage) {

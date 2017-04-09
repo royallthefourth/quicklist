@@ -62,14 +62,28 @@ VALUES(?, ?, ?, ?)');
     }
 }
 
+function allByContact(DataObject $db, int $contactId): iterable
+{
+    $stmt = $db->prepare('SELECT M.ROWID AS message_id, subject, date_scheduled, date_sent
+    FROM deliveries D
+    INNER JOIN messages M ON M.ROWID = D.message_id
+    INNER JOIN list_contacts LC ON LC.ROWID = D.list_contact_id
+    WHERE LC.contact_id = ?
+    ORDER BY date_scheduled DESC')
+        ->execute([$contactId]);
+    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        yield $row;
+    }
+}
+
 /**
  * Fetch the upcoming deliveries that fit within the hourly send limit.
  *
  * @param DataObject $db
  * @param int $hourlySendLimit
- * @return \Generator
+ * @return iterable
  */
-function fetchDue(DataObject $db, int $hourlySendLimit): \Generator
+function fetchDue(DataObject $db, int $hourlySendLimit): iterable
 {
     $stmt = $db->prepare('SELECT D.ROWID AS id, email, subject, body, unsub_hash
     FROM deliveries D
@@ -95,9 +109,9 @@ WHERE date_sent >= datetime(\'now\', \'-1 hour\')))))')
  * Fetch all upcoming deliveries.
  *
  * @param DataObject $db
- * @return \Generator
+ * @return iterable
  */
-function fetchPending(DataObject $db): \Generator
+function fetchPending(DataObject $db): iterable
 {
     $stmt = $db->prepare('SELECT D.ROWID AS id, email, subject, date_scheduled
     FROM deliveries D

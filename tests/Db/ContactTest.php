@@ -3,6 +3,7 @@
 namespace RoyallTheFourth\QuickList\Tests\Db;
 
 use Faker;
+use function RoyallTheFourth\QuickList\Common\iterableToArray;
 use RoyallTheFourth\QuickList\Db\Contact;
 use RoyallTheFourth\SmoothPdo\DataObject;
 
@@ -23,10 +24,8 @@ class ContactTest extends Base
         Contact\add($this->db, $email);
         static::assertCount(
             1,
-            $this->db->query("SELECT * FROM contacts WHERE email = '{$email}'")->fetchAll(\PDO::FETCH_ASSOC)
+            iterableToArray(Contact\all($this->db))
         );
-
-        static::assertGreaterThan(0, Contact\all($this->db));
     }
 
     public function testAddBulk()

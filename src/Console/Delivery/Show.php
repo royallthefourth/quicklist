@@ -2,7 +2,7 @@
 
 namespace RoyallTheFourth\QuickList\Console\Delivery;
 
-use function RoyallTheFourth\QuickList\Common\generatorToArray;
+use function RoyallTheFourth\QuickList\Common\iterableToArray;
 use RoyallTheFourth\QuickList\Db\Delivery;
 use RoyallTheFourth\SmoothPdo\DataObject;
 use Symfony\Component\Console\Command\Command;
@@ -42,7 +42,7 @@ class Show extends Command
                         (new \DateTimeImmutable($row['date_scheduled'], new \DateTimeZone('UTC')))
                             ->setTimezone($this->timezone)->format('Y-m-d H:i:s')
                     ];
-                }, generatorToArray(Delivery\fetchPending($this->db)))
+                }, iterableToArray(Delivery\fetchPending($this->db)))
             );
     }
 }

@@ -2,7 +2,7 @@
 
 namespace RoyallTheFourth\QuickList\Console\MailingList;
 
-use function RoyallTheFourth\QuickList\Common\generatorToArray;
+use function RoyallTheFourth\QuickList\Common\iterableToArray;
 use RoyallTheFourth\QuickList\Db\MailingList;
 use RoyallTheFourth\SmoothPdo\DataObject;
 use Symfony\Component\Console\Command\Command;
@@ -30,6 +30,6 @@ class Show extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         (new SymfonyStyle($input, $output))
-            ->table(['id', 'name'], generatorToArray(MailingList\all($this->db)));
+            ->table(['id', 'name'], iterableToArray(MailingList\all($this->db)));
     }
 }

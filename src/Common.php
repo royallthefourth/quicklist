@@ -4,11 +4,11 @@ namespace RoyallTheFourth\QuickList\Common;
 
 use Symfony\Component\Yaml\Yaml;
 
-function generatorToArray(\Generator $gen): array
+function iterableToArray(iterable $iter): array
 {
     $out = [];
-    foreach ($gen as $item) {
-        $out[] = $item;
+    foreach ($iter as $el) {
+        $out[] = $el;
     }
 
     return $out;
@@ -32,4 +32,21 @@ function mailer(array $config): \PHPMailer
     $mailer->Port = $config['smtp']['port'];
     $mailer->setFrom($config['from']);
     return $mailer;
+}
+
+/**
+ * Converts database times to human-readable times
+ *
+ * @param string $dateTime The dateTime in UTC
+ * @param \DateTimeZone $timezone
+ * @return string
+ */
+function localDate(?string $dateTime, \DateTimeZone $timezone): string
+{
+    if ($dateTime === null) {
+        return '';
+    }
+    return (new \DateTimeImmutable($dateTime, new \DateTimeZone('UTC')))
+        ->setTimezone($timezone)
+        ->format('Y-m-d H:i:s');
 }
