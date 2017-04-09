@@ -76,6 +76,23 @@ function allByContact(DataObject $db, int $contactId): iterable
     }
 }
 
+function allByMessage(DataObject $db, int $messageId): iterable
+{
+    $stmt = $db
+        ->prepare('SELECT LC.contact_id, C.email, L.ROWID AS list_id, L.name AS list_name, date_scheduled, date_sent
+    FROM deliveries D
+    INNER JOIN messages M ON M.ROWID = D.message_id
+    INNER JOIN list_contacts LC ON LC.ROWID = D.list_contact_id
+    INNER JOIN lists L ON L.ROWID = LC.list_id
+    INNER JOIN contacts C ON C.ROWID = LC.contact_id
+    WHERE M.ROWID = ?
+    ORDER BY date_scheduled DESC')
+        ->execute([$messageId]);
+    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        yield $row;
+    }
+}
+
 /**
  * Fetch the upcoming deliveries that fit within the hourly send limit.
  *

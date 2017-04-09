@@ -37,6 +37,14 @@ function count(DataObject $db): int
     return $db->query('SELECT COUNT(ROWID) FROM messages')->fetch(\PDO::FETCH_NUM)[0];
 }
 
+function oneById(DataObject $db, int $messageId): array
+{
+    return $db
+        ->prepare('SELECT ROWID AS id, * FROM messages WHERE ROWID = ?')
+        ->execute([$messageId])
+        ->fetch(\PDO::FETCH_ASSOC);
+}
+
 function paginated(DataObject $db, int $page = 1, int $perPage = 50): iterable
 {
     $stmt = $db->prepare('SELECT ROWID AS id, *

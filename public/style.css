@@ -163,3 +163,18 @@ th, td {
 tr:hover {
     background-color: gainsboro;
 }
+
+pre {
+    background-color: gainsboro;
+}
+
+section {
+    border-bottom: 1px solid #212121;
+    display: flex;
+    margin: 1rem;
+}
+
+section > * {
+    flex: 1;
+    padding: 1rem;
+}
