@@ -2,6 +2,7 @@
 
 namespace RoyallTheFourth\QuickList\Layout\Base;
 
+use function RoyallTheFourth\QuickList\Layout\Partial\flash;
 use RoyallTheFourth\QuickList\Layout\LayoutInterface;
 
 final class LoggedOut implements LayoutInterface

@@ -1,5 +1,7 @@
 <?php
 
+namespace RoyallTheFourth\QuickList\Layout\Partial;
+
 function flash(string $message = ''): string
 {
     return <<<flash
