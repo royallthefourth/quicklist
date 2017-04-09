@@ -14,11 +14,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class AddContactBulk extends Command
 {
     private $db;
-    private $domain;
 
-    public function __construct(DataObject $db, string $domain)
+    public function __construct(DataObject $db)
     {
-        $this->domain = $domain;
         $this->db = $db;
         parent::__construct();
     }
