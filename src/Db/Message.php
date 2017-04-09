@@ -23,9 +23,29 @@ function add(DataObject $db, string $subject, string $body): int
 
 function all(DataObject $db): array
 {
-    if (!($rs = $db->query('SELECT ROWID AS id, subject FROM messages')->fetchAll(\PDO::FETCH_ASSOC))) {
+    if (!($rs = $db->query('SELECT ROWID AS id, * FROM messages')
+        ->fetchAll(\PDO::FETCH_ASSOC))
+    ) {
         $rs = [];
     }
 
     return $rs;
+}
+
+function count(DataObject $db): int
+{
+    return $db->query('SELECT COUNT(ROWID) FROM messages')->fetch(\PDO::FETCH_NUM)[0];
+}
+
+function paginated(DataObject $db, int $page = 1, int $perPage = 50): iterable
+{
+    $stmt = $db->prepare('SELECT ROWID AS id, *
+FROM messages
+ORDER BY date_added DESC
+LIMIT ? OFFSET ?')
+        ->execute([$perPage, ($page - 1) * $perPage]);
+
+    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        yield $row;
+    }
 }

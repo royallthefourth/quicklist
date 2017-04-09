@@ -10,7 +10,8 @@ function loggedIn(string $webPrefix): array
         ['GET', "{$webPrefix}/", Action\Dashboard\Get::class],
         ['GET', "{$webPrefix}/logout", Action\Logout\Get::class],
         ['GET', "{$webPrefix}/contact/{page:\\d+}", Action\Contact\Index\Get::class],
-        ['GET', "{$webPrefix}/contact/view/{contactId:\\d+}", Action\Contact\View\Get::class]
+        ['GET', "{$webPrefix}/contact/view/{contactId:\\d+}", Action\Contact\View\Get::class],
+        ['GET', "{$webPrefix}/message/{page:\\d+}", Action\Message\Index\Get::class],
     ];
 }
 
