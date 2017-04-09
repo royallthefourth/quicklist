@@ -1,6 +1,7 @@
 # Quicklist
 Quicklist is a mailing list manager that's designed to be as straightforward as possible.
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/737d5138-bd54-4076-ab65-368343a0ab1e/mini.png)](https://insight.sensiolabs.com/projects/737d5138-bd54-4076-ab65-368343a0ab1e)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/royallthefourth/quicklist/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/royallthefourth/quicklist/?branch=master)
 
 ## Features
