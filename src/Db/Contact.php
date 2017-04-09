@@ -43,7 +43,7 @@ function paginated(DataObject $db, int $page = 1, int $perPage = 50): iterable
 {
     $stmt = $db->prepare('SELECT ROWID AS id, *
 FROM contacts
-ORDER BY date_added ASC
+ORDER BY date_added DESC
 LIMIT ? OFFSET ?')
         ->execute([$perPage, ($page - 1) * $perPage]);
 
