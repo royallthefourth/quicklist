@@ -1,35 +1,33 @@
 <?php
 
-use RoyallTheFourth\HtmlDocument\Element\Anchor;
-use RoyallTheFourth\HtmlDocument\Element\Division;
-use RoyallTheFourth\HtmlDocument\Element\ListItem;
-use RoyallTheFourth\HtmlDocument\Element\Text;
-use RoyallTheFourth\HtmlDocument\Element\UnorderedList;
-use RoyallTheFourth\HtmlDocument\Set\ElementSet;
-
-function flash(string $message = ''): ElementSet
+function flash(string $message = ''): string
 {
-    return (new ElementSet())
-        ->add((new Division())
-            ->withChild(new Text($message))
-            ->withId('flash'));
+    return <<<flash
+    <div id="flash">{$message}</div>
+flash;
 }
 
-function nav(string $webPrefix): ElementSet
+function nav(string $webPrefix): string
 {
-    return new ElementSet(
-        (new UnorderedList())
-            ->withChild((new ListItem())
-                ->withChild((new Anchor())
-                    ->withHref("{$webPrefix}/")
-                    ->withChild(new Text('dashboard'))
-                )
-            )
-            ->withChild((new ListItem())
-                ->withChild((new Anchor())
-                    ->withHref("{$webPrefix}/logout")
-                    ->withChild(new Text('logout'))
-                )
-            )
-    );
+    return <<<nav
+        <ul>
+        <li><a href="{$webPrefix}/">dashboard</a></li>
+        <li><a href="{$webPrefix}/contact/1">contacts</a></li>
+        <li><a href="{$webPrefix}/logout">logout</a></li>
+</ul>
+nav;
+}
+
+function pagination(int $currentPage, int $total, int $perPage, string $path): string
+{
+    $links = '';
+    for ($i = 1; ($i - 1) * $perPage < $total; $i++) {
+        if ($i === $currentPage) {
+            $links .= "<li>{$i}</li>";
+        } else {
+            $links .= "<li><a href=\"{$path}/{$i}\">{$i}</a></li>";
+        }
+    }
+
+    return "<ul class=\"pagination\">{$links}</ul>";
 }

@@ -2,8 +2,6 @@
 
 namespace RoyallTheFourth\QuickList\Layout;
 
-use RoyallTheFourth\HtmlDocument\Element\Text;
-use RoyallTheFourth\HtmlDocument\Set\ElementSet;
 use RoyallTheFourth\QuickList\Layout\Base\LoggedIn;
 
 final class Dashboard implements LayoutInterface
@@ -19,7 +17,7 @@ final class Dashboard implements LayoutInterface
     {
         return (new LoggedIn(
             'Dashboard',
-            new ElementSet(new Text('TODO update dashboard')), // TODO update dashboard
+            'Welcome to Quicklist!',
             $this->webPrefix
         ))->render();
     }

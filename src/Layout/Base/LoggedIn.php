@@ -2,7 +2,6 @@
 
 namespace RoyallTheFourth\QuickList\Layout\Base;
 
-use RoyallTheFourth\HtmlDocument\Set\ElementSet;
 use RoyallTheFourth\QuickList\Layout\LayoutInterface;
 
 final class LoggedIn implements LayoutInterface
@@ -12,7 +11,7 @@ final class LoggedIn implements LayoutInterface
     private $nav;
     private $title;
 
-    public function __construct(string $title, ElementSet $body, string $webPrefix)
+    public function __construct(string $title, string $body, string $webPrefix)
     {
         $this->title = htmlspecialchars($title);
         $this->body = $body;
@@ -22,7 +21,6 @@ final class LoggedIn implements LayoutInterface
 
     public function render(): string
     {
-        unset($_SESSION['flash']);
         return (new LoggedOut($this->title, $this->body, $this->flash, $this->nav))->render();
     }
 }

@@ -2,8 +2,6 @@
 
 namespace RoyallTheFourth\QuickList\Layout\Optin;
 
-use RoyallTheFourth\HtmlDocument\Element\Text;
-use RoyallTheFourth\HtmlDocument\Set\ElementSet;
 use RoyallTheFourth\QuickList\Layout\Base\LoggedOut;
 use RoyallTheFourth\QuickList\Layout\LayoutInterface;
 
@@ -20,9 +18,7 @@ final class Confirmation implements LayoutInterface
     {
         return (new LoggedOut(
             "Subscribe to {$this->listName}",
-            (new ElementSet())
-                ->add(new Text("You are now subscribed to {$this->listName}."))
-        )
-        )->render();
+            "You are now subscribed to {$this->listName}"
+        ))->render();
     }
 }

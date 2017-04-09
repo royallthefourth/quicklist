@@ -2,11 +2,6 @@
 
 namespace RoyallTheFourth\QuickList\Layout\Optin;
 
-use RoyallTheFourth\HtmlDocument\Element\Button;
-use RoyallTheFourth\HtmlDocument\Element\Form;
-use RoyallTheFourth\HtmlDocument\Element\Input;
-use RoyallTheFourth\HtmlDocument\Element\Text;
-use RoyallTheFourth\HtmlDocument\Set\ElementSet;
 use RoyallTheFourth\QuickList\Layout\Base\LoggedOut;
 use RoyallTheFourth\QuickList\Layout\LayoutInterface;
 
@@ -20,39 +15,25 @@ final class Landing implements LayoutInterface
     public function __construct(string $listName, string $hash, string $csrf, string $prefix)
     {
         $this->listName = $listName;
-        $this->hash = $hash;
+        $this->hash = strip_tags($hash);
         $this->csrf = $csrf;
         $this->prefix = $prefix;
     }
 
     public function render(): string
     {
+        $page = <<<page
+<form method="POST" action="{$this->prefix}/optin">
+Confirm your subscription to receive messages from {$this->listName}:
+<input type="hidden" name="hash" value="{$this->hash}" />
+<input type="hidden" name="csrf" value="{$this->csrf}" />
+<button>Yes, sign me up!</button>
+</form>
+page;
+
         return (new LoggedOut(
             "Subscribe to {$this->listName}",
-            (new ElementSet())
-                ->add(
-                    (new Form())
-                        ->withMethod('POST')
-                        ->withAction("{$this->prefix}/optin")
-                        ->withChild(new Text("Confirm your subscription to receive messages from {$this->listName}:"))
-                        ->withChild(
-                            (new Input())
-                                ->withType('hidden')
-                                ->withName('hash')
-                                ->withValue($this->hash)
-                        )
-                        ->withChild(
-                            (new Input())
-                                ->withType('hidden')
-                                ->withName('csrf')
-                                ->withValue($this->csrf)
-                        )
-                        ->withChild(
-                            (new Button())
-                                ->withChild(new Text('Yes, sign me up!'))
-                        )
-                )
-        )
-        )->render();
+            $page
+        ))->render();
     }
 }
