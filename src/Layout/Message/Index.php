@@ -51,6 +51,6 @@ row;
 </table>
 {$this->pagination}
 table;
-        return (new LoggedIn('Contacts', $table, $this->webPrefix))->render();
+        return (new LoggedIn('Messages', $table, $this->webPrefix))->render();
     }
 }
