@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4a08db3f225ef796d49b3e4a0e354c3b",
+    "content-hash": "30f3634214a624650ef75a5b734ece9d",
     "packages": [
         {
             "name": "gilbitron/easycsrf",
@@ -2344,6 +2344,8 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": "^7.1"
+    },
     "platform-dev": []
 }
