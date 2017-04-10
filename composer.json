@@ -10,6 +10,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
+        "php": "^7.1",
         "gilbitron/easycsrf": "^1.0",
         "nikic/fast-route": "^1.2",
         "phpmailer/phpmailer": "^5.2",
