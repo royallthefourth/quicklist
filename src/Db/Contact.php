@@ -6,13 +6,13 @@ use RoyallTheFourth\SmoothPdo\DataObject;
 
 function add(\PDO $db, string $email): void
 {
-    $db->prepare('INSERT INTO contacts(email) VALUES (?)')
+    $db->prepare('INSERT OR IGNORE INTO contacts(email) VALUES (?)')
         ->execute([$email]);
 }
 
 function addBulk(DataObject $db, array $emails): void
 {
-    $stmt = $db->prepare('INSERT INTO contacts(email) VALUES(?)');
+    $stmt = $db->prepare('INSERT OR IGNORE INTO contacts(email) VALUES(?)');
     foreach ($emails as $email) {
         $stmt->execute([$email]);
     }
