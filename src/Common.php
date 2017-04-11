@@ -2,6 +2,7 @@
 
 namespace RoyallTheFourth\QuickList\Common;
 
+use Respect\Validation\Validator;
 use Symfony\Component\Yaml\Yaml;
 
 function iterableToArray(iterable $iter): array
@@ -49,4 +50,13 @@ function localDate(?string $dateTime, \DateTimeZone $timezone): string
     return (new \DateTimeImmutable($dateTime, new \DateTimeZone('UTC')))
         ->setTimezone($timezone)
         ->format('Y-m-d H:i:s');
+}
+
+function readEmailsFromConsole(): iterable
+{
+    while ($email = readline()) {
+        if (Validator::email()->validate($email)) {
+            yield $email;
+        }
+    }
 }
