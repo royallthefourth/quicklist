@@ -34,7 +34,6 @@ final class Get implements ActionInterface
             (new Index(
                 paginated($this->db, $this->page, $this->perPage),
                 $this->webPrefix,
-                $this->page,
                 $this->timezone,
                 pagination($this->page, count($this->db), $this->perPage, "{$this->webPrefix}/contact")
             ))->render()

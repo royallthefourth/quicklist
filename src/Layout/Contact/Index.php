@@ -16,7 +16,6 @@ final class Index implements LayoutInterface
     public function __construct(
         iterable $contacts,
         string $webPrefix,
-        int $page,
         \DateTimeZone $timezone,
         string $pagination
     ) {
@@ -32,7 +31,7 @@ final class Index implements LayoutInterface
         foreach ($this->contacts as ['id' => $id, 'email' => $email, 'date_added' => $dateAdded]) {
             $dateAdded = localDate($dateAdded, $this->timezone);
             $rows .= <<<row
-<tr><td>{$id}</td><td><a href="{$this->webPrefix}/contact/view/{$id}">{$email}</a></td><td>{$dateAdded}</td></tr>
+<tr><td><a href="{$this->webPrefix}/contact/view/{$id}">{$email}</a></td><td>{$dateAdded}</td></tr>
 row;
         }
         $table = <<<table
@@ -40,7 +39,6 @@ row;
 <table>
 <thead>
 <tr>
-<th>id</th>
 <th>email</th>
 <th>date added</th>
 </tr>
