@@ -13,12 +13,10 @@ function loggedIn(string $webPrefix): array
         ['GET', "{$webPrefix}/contact/view/{contactId:\\d+}", Action\Contact\View\Get::class],
         ['GET', "{$webPrefix}/message/{page:\\d+}", Action\Message\Index\Get::class],
         ['GET', "{$webPrefix}/message/view/{messageId:\\d+}", Action\Message\View\Get::class],
-//        ['GET', "{$webPrefix}/message/edit/{messageId:\\d+}", Action\Message\Edit\Get::class],
-//        [
-//            'GET',
-//            "{$webPrefix}/delivery/schedule",
-//            Action\Delivery\Schedule\GET::class
-//        ]
+        ['GET', "{$webPrefix}/message/edit/{messageId:\\d+}", Action\Message\Edit\Get::class],
+        ['POST', "{$webPrefix}/message/edit/{messageId:\\d+}", Action\Message\Edit\Post::class],
+        ['GET', "{$webPrefix}/message/add", Action\Message\Add\Get::class],
+        ['POST', "{$webPrefix}/message/add", Action\Message\Add\Post::class]
     ];
 }
 

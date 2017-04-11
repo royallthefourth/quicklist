@@ -37,6 +37,7 @@ row;
         }
         $table = <<<table
 <h1>Messages</h1>
+<a href="{$this->webPrefix}/message/add">Add a new message</a>
 <table>
 <thead>
 <tr>

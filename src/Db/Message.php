@@ -57,3 +57,10 @@ LIMIT ? OFFSET ?')
         yield $row;
     }
 }
+
+function update(DataObject $db, string $subject, string $body, int $messageId)
+{
+    $db
+        ->prepare('UPDATE messages SET (subject, body) = (?, ?) WHERE ROWID = ?')
+        ->execute([$subject, $body, $messageId]);
+}
