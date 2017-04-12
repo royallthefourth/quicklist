@@ -69,7 +69,7 @@ function process(DataObject $db, array $config, \PHPMailer $mailer): int
 function schedule(DataObject $db, int $messageId, int $listId, \DateTimeImmutable $sendDate): int
 {
     $count = 0;
-    $contacts = MailingList\allContacts($db, $listId);
+    $contacts = MailingList\allContactsDeliverable($db, $listId);
     $deliveries = [];
 
     foreach ($contacts as $contact) {

@@ -42,19 +42,20 @@ function all(DataObject $db): iterable
 function allByContact(DataObject $db, int $contactId): iterable
 {
     $stmt = $db
-        ->prepare('SELECT L.id, L.name, date_added, date_unsubscribed
-        FROM lists L
-        INNER JOIN list_contacts LC ON LC.contact_id = L.id
-        WHERE LC.contact_id = ?')
+        ->prepare('SELECT L.id, L.name, LC.date_added, LC.date_optin, LC.date_unsubscribed
+FROM list_contacts LC
+  LEFT JOIN lists L ON L.id = LC.list_id
+WHERE LC.contact_id = ?')
         ->execute([$contactId]);
     while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
         yield $row;
     }
 }
 
-function allContacts(DataObject $db, int $listId): iterable
+function allContactsDeliverable(DataObject $db, int $listId): iterable
 {
-    $stmt = $db->prepare('
+    $stmt = $db
+        ->prepare('
 SELECT
   LC.ROWID AS id,
   email,
@@ -65,8 +66,8 @@ WHERE LC.list_id = ?
       AND date_optin IS NOT NULL
       AND date_removed IS NULL
       AND date_unsubscribed IS NULL
-      ');
-    $stmt->execute([$listId]);
+      ')
+        ->execute([$listId]);
     while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
         yield $row;
     }
@@ -123,6 +124,11 @@ function getId(DataObject $db, string $name): int
         ->fetch(\PDO::FETCH_ASSOC)['id'];
 }
 
+function getName(DataObject $db, int $listId): string
+{
+    return $db->prepare('SELECT name FROM lists WHERE id = ?')->execute([$listId])->fetch(\PDO::FETCH_NUM)[0];
+}
+
 function getNameFromOptinHash(DataObject $db, string $hash): string
 {
     return $db->prepare('SELECT name
@@ -151,6 +157,28 @@ function optInContact(DataObject $db, string $listName, string $email, string $h
   (SELECT id FROM contacts WHERE email = ?),
   ?)')
         ->execute([$listName, $email, $hash]);
+}
+
+function paginatedContactsRaw(DataObject $db, int $listId, int $page = 1, int $perPage = 50): iterable
+{
+    $stmt = $db
+        ->prepare('
+SELECT
+  LC.ROWID AS id,
+  email,
+  LC.date_added,
+  LC.date_optin,
+  LC.date_unsubscribed
+FROM list_contacts LC
+  INNER JOIN contacts C ON C.ROWID = LC.contact_id
+WHERE LC.list_id = ?
+      AND date_removed IS NULL
+      LIMIT ? OFFSET ?
+      ')
+        ->execute([$listId, $perPage, ($page - 1) * $perPage]);
+    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        yield $row;
+    }
 }
 
 function removeContact(DataObject $db, string $listName, string $email): void

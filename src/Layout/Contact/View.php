@@ -49,12 +49,15 @@ contactInfo;
         foreach ($lists as ['id' => $listId,
                  'name' => $name,
                  'date_added' => $dateAdded,
+                 'date_optin' => $dateOptin,
                  'date_unsubscribed' => $dateUnsubscribed]) {
             $dateAdded = localDate($dateAdded, $this->timezone);
+            $dateOptin = localDate($dateOptin, $this->timezone);
             $dateUnsubscribed = localDate($dateUnsubscribed, $this->timezone);
             $rows .= "<tr>
 <td><a href=\"{$webPrefix}/list/view/{$listId}\">{$name}</a></td>
 <td>{$dateAdded}</td>
+<td>{$dateOptin}</td>
 <td>{$dateUnsubscribed}</td>
 </tr>";
         }
@@ -66,6 +69,7 @@ contactInfo;
 <tr>
 <th>name</th>
 <th>date added</th>
+<th>optin date</th>
 <th>date unsubscribed</th>
 </tr>
 </thead>

@@ -17,7 +17,8 @@ function loggedIn(string $webPrefix): array
         ['POST', "{$webPrefix}/message/edit/{messageId:\\d+}", Action\Message\Edit\Post::class],
         ['GET', "{$webPrefix}/message/add", Action\Message\Add\Get::class],
         ['POST', "{$webPrefix}/message/add", Action\Message\Add\Post::class],
-        ['GET', "{$webPrefix}/list/{page:\\d+}", Action\MailingList\Index\Get::class]
+        ['GET', "{$webPrefix}/list/{page:\\d+}", Action\MailingList\Index\Get::class],
+        ['GET', "{$webPrefix}/list/{listId:\\d+}/contacts/{page:\\d+}", Action\MailingList\Contacts\Get::class],
     ];
 }
 

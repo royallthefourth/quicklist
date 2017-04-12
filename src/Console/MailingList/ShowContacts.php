@@ -43,7 +43,7 @@ class ShowContacts extends Command
                         (new \DateTimeImmutable($row['date_added'], new \DateTimeZone('UTC')))
                             ->setTimezone($this->timezone)->format('Y-m-d H:i:s')
                     ];
-                }, iterableToArray(MailingList\allContacts($this->db, $input->getArgument('list-id'))))
+                }, iterableToArray(MailingList\allContactsDeliverable($this->db, $input->getArgument('list-id'))))
             );
     }
 }
