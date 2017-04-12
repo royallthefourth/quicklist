@@ -2,6 +2,7 @@
 
 namespace RoyallTheFourth\QuickList\Console\Message;
 
+use function RoyallTheFourth\QuickList\Common\readMessageFromConsole;
 use RoyallTheFourth\QuickList\Db\Message;
 use RoyallTheFourth\SmoothPdo\DataObject;
 use Symfony\Component\Console\Command\Command;
@@ -30,13 +31,6 @@ class Add extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Enter your message:');
-
-        $lines = [];
-        while ($line = readline()) {
-            $lines[] = $line;
-        }
-
-        $message = implode("\n", $lines);
-        $output->writeln(Message\add($this->db, $input->getArgument('subject'), $message));
+        $output->writeln(Message\add($this->db, $input->getArgument('subject'), readMessageFromConsole()));
     }
 }

@@ -54,9 +54,19 @@ function localDate(?string $dateTime, \DateTimeZone $timezone): string
 
 function readEmailsFromConsole(): iterable
 {
-    while ($email = readline()) {
+    while ($email = trim(fgets(STDIN))) {
         if (Validator::email()->validate($email)) {
             yield $email;
         }
     }
+}
+
+function readMessageFromConsole(): string
+{
+    $lines = [];
+    while ($line = trim(fgets(STDIN))) {
+        $lines[] = $line;
+    }
+
+    return implode("\n", $lines);
 }

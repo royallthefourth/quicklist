@@ -14,10 +14,10 @@ Quicklist is a mailing list manager that's designed to be as straightforward as 
 
 ## Requirements
 * An SMTP provider
-* A web server with `readline` available (ie not Windows)
 * PHP 7.1 or greater
 * Composer
 * SQLite
+* A web server (optional)
 
 ## Installation
 1. Decompress the most recent release on your server
