@@ -6,7 +6,7 @@ use RoyallTheFourth\SmoothPdo\DataObject;
 
 function getByName(DataObject $db, string $name): array
 {
-    $user = $db->prepare('SELECT ROWID AS id, *
+    $user = $db->prepare('SELECT *
     FROM users
     WHERE name = ?')
         ->execute([$name])

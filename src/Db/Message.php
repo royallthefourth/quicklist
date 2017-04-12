@@ -23,7 +23,7 @@ function add(DataObject $db, string $subject, string $body): int
 
 function all(DataObject $db): array
 {
-    if (!($rs = $db->query('SELECT ROWID AS id, * FROM messages')
+    if (!($rs = $db->query('SELECT * FROM messages')
         ->fetchAll(\PDO::FETCH_ASSOC))
     ) {
         $rs = [];
@@ -34,20 +34,20 @@ function all(DataObject $db): array
 
 function count(DataObject $db): int
 {
-    return $db->query('SELECT COUNT(ROWID) FROM messages')->fetch(\PDO::FETCH_NUM)[0];
+    return $db->query('SELECT COUNT(id) FROM messages')->fetch(\PDO::FETCH_NUM)[0];
 }
 
 function oneById(DataObject $db, int $messageId): array
 {
     return $db
-        ->prepare('SELECT ROWID AS id, * FROM messages WHERE ROWID = ?')
+        ->prepare('SELECT * FROM messages WHERE id = ?')
         ->execute([$messageId])
         ->fetch(\PDO::FETCH_ASSOC);
 }
 
 function paginated(DataObject $db, int $page = 1, int $perPage = 50): iterable
 {
-    $stmt = $db->prepare('SELECT ROWID AS id, *
+    $stmt = $db->prepare('SELECT *
 FROM messages
 ORDER BY date_added DESC
 LIMIT ? OFFSET ?')
@@ -61,6 +61,6 @@ LIMIT ? OFFSET ?')
 function update(DataObject $db, string $subject, string $body, int $messageId)
 {
     $db
-        ->prepare('UPDATE messages SET (subject, body) = (?, ?) WHERE ROWID = ?')
+        ->prepare('UPDATE messages SET (subject, body) = (?, ?) WHERE id = ?')
         ->execute([$subject, $body, $messageId]);
 }

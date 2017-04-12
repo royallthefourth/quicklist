@@ -7,22 +7,26 @@ class InitialSetup extends AbstractMigration
     public function up()
     {
         $this->execute('CREATE TABLE users(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             `name` TEXT UNIQUE COLLATE NOCASE,
             `password` TEXT
           );
           
           CREATE TABLE lists(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             `name` TEXT UNIQUE COLLATE NOCASE
           );
           
           CREATE TABLE contacts(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             email TEXT UNIQUE COLLATE NOCASE,
             date_added DATETIME DEFAULT CURRENT_TIMESTAMP
           );
           
           CREATE TABLE list_contacts(
-            list_id INTEGER REFERENCES lists(ROWID),
-            contact_id INTEGER REFERENCES contacts(ROWID),
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            list_id INTEGER REFERENCES lists(id),
+            contact_id INTEGER REFERENCES contacts(id),
             date_added DATETIME DEFAULT CURRENT_TIMESTAMP,
             date_removed DATETIME,
             date_optin DATETIME,
@@ -31,14 +35,17 @@ class InitialSetup extends AbstractMigration
           );
           
           CREATE TABLE messages(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             subject TEXT,
             body TEXT,
-            date_added DATETIME DEFAULT CURRENT_TIMESTAMP
+            date_added DATETIME DEFAULT CURRENT_TIMESTAMP,
+            list_contact_id INTEGER REFERENCES list_contacts(id) -- for optin messages
           );
           
           CREATE TABLE deliveries(
-            message_id INTEGER REFERENCES messages(ROWID),
-            list_contact_id INTEGER REFERENCES list_contacts(ROWID),
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            message_id INTEGER REFERENCES messages(id),
+            list_contact_id INTEGER REFERENCES list_contacts(id),
             date_scheduled DATETIME NOT NULL,
             date_sent DATETIME,
             date_canceled DATETIME,
@@ -46,7 +53,6 @@ class InitialSetup extends AbstractMigration
           );
           
           CREATE UNIQUE INDEX uq_list_contacts ON list_contacts(list_id, contact_id);
-          CREATE UNIQUE INDEX uq_deliveries ON deliveries(message_id, list_contact_id);
-          PRAGMA journal_mode=WAL;');
+          CREATE UNIQUE INDEX uq_deliveries ON deliveries(message_id, list_contact_id);');
     }
 }

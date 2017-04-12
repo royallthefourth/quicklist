@@ -2,6 +2,7 @@
 
 namespace RoyallTheFourth\QuickList\Console\Contact;
 
+use function RoyallTheFourth\QuickList\Common\readEmailsFromConsole;
 use RoyallTheFourth\QuickList\Db\Contact;
 use RoyallTheFourth\SmoothPdo\DataObject;
 use Symfony\Component\Console\Command\Command;
@@ -27,11 +28,7 @@ class AddBulk extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $emails = [];
-        while (strlen($email = readline()) > 0) {
-            $emails[] = $email;
-        }
-
-        Contact\addBulk($this->db, $emails);
+        $output->writeln('Enter emails, one per line:');
+        $output->writeln('Added ' . Contact\addBulk($this->db, readEmailsFromConsole()) . ' email addresses.');
     }
 }

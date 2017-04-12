@@ -9,7 +9,7 @@ use RoyallTheFourth\SmoothPdo\DataObject;
  * Add a single list contact to be delivered
  * @param DataObject $db
  * @param int $messageId
- * @param string $list
+ * @param int $listId
  * @param string $email
  * @param \DateTimeImmutable $sendDate
  * @param string $hash
@@ -18,7 +18,7 @@ use RoyallTheFourth\SmoothPdo\DataObject;
 function add(
     DataObject $db,
     int $messageId,
-    string $list,
+    int $listId,
     string $email,
     \DateTimeImmutable $sendDate,
     string $hash
@@ -26,15 +26,15 @@ function add(
     $db->beginTransaction();
     $db->prepare('INSERT INTO deliveries(message_id, list_contact_id, date_scheduled, unsub_hash)
 VALUES(?,
-(SELECT LC.ROWID FROM list_contacts LC
-INNER JOIN lists L ON L.ROWID = LC.list_id
-INNER JOIN contacts C ON C.ROWID = LC.contact_id
-WHERE L.name = ?
+(SELECT LC.id FROM list_contacts LC
+INNER JOIN lists L ON L.id = LC.list_id
+INNER JOIN contacts C ON C.id = LC.contact_id
+WHERE L.id = ?
 AND C.email = ?),
 ?,
 ?)')->execute([
         $messageId,
-        $list,
+        $listId,
         $email,
         $sendDate->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d H:i:s'),
         $hash
@@ -64,10 +64,10 @@ VALUES(?, ?, ?, ?)');
 
 function allByContact(DataObject $db, int $contactId): iterable
 {
-    $stmt = $db->prepare('SELECT M.ROWID AS message_id, subject, date_scheduled, date_sent
+    $stmt = $db->prepare('SELECT M.id AS message_id, subject, date_scheduled, date_sent
     FROM deliveries D
-    INNER JOIN messages M ON M.ROWID = D.message_id
-    INNER JOIN list_contacts LC ON LC.ROWID = D.list_contact_id
+    INNER JOIN messages M ON M.id = D.message_id
+    INNER JOIN list_contacts LC ON LC.id = D.list_contact_id
     WHERE LC.contact_id = ?
     ORDER BY date_scheduled DESC')
         ->execute([$contactId]);
@@ -79,13 +79,13 @@ function allByContact(DataObject $db, int $contactId): iterable
 function allByMessage(DataObject $db, int $messageId): iterable
 {
     $stmt = $db
-        ->prepare('SELECT LC.contact_id, C.email, L.ROWID AS list_id, L.name AS list_name, date_scheduled, date_sent
+        ->prepare('SELECT LC.contact_id, C.email, L.id AS list_id, L.name AS list_name, date_scheduled, date_sent
     FROM deliveries D
-    INNER JOIN messages M ON M.ROWID = D.message_id
-    INNER JOIN list_contacts LC ON LC.ROWID = D.list_contact_id
-    INNER JOIN lists L ON L.ROWID = LC.list_id
-    INNER JOIN contacts C ON C.ROWID = LC.contact_id
-    WHERE M.ROWID = ?
+    INNER JOIN messages M ON M.id = D.message_id
+    INNER JOIN list_contacts LC ON LC.id = D.list_contact_id
+    INNER JOIN lists L ON L.id = LC.list_id
+    INNER JOIN contacts C ON C.id = LC.contact_id
+    WHERE M.id = ?
     ORDER BY date_scheduled DESC')
         ->execute([$messageId]);
     while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
@@ -102,17 +102,17 @@ function allByMessage(DataObject $db, int $messageId): iterable
  */
 function fetchDue(DataObject $db, int $hourlySendLimit): iterable
 {
-    $stmt = $db->prepare('SELECT D.ROWID AS id, email, subject, body, unsub_hash
+    $stmt = $db->prepare('SELECT D.id AS id, email, subject, body, unsub_hash
     FROM deliveries D
-    INNER JOIN list_contacts LC ON LC.ROWID = D.list_contact_id
-    INNER JOIN contacts C ON C.ROWID = LC.contact_id
-    INNER JOIN messages M ON M.ROWID = D.message_id
+    INNER JOIN list_contacts LC ON LC.id = D.list_contact_id
+    INNER JOIN contacts C ON C.id = LC.contact_id
+    INNER JOIN messages M ON M.id = D.message_id
     WHERE LC.date_unsubscribed IS NULL
     AND D.date_scheduled < CURRENT_TIMESTAMP
     AND D.date_sent IS NULL
     AND D.date_canceled IS NULL
     ORDER BY D.date_scheduled ASC
-    LIMIT (SELECT MIN(?, MAX(0, ?-(SELECT COUNT(ROWID)
+    LIMIT (SELECT MIN(?, MAX(0, ?-(SELECT COUNT(id)
 FROM deliveries
 WHERE date_sent >= datetime(\'now\', \'-1 hour\')))))')
         ->execute([sendsPerMinute($hourlySendLimit), $hourlySendLimit]);
@@ -130,11 +130,11 @@ WHERE date_sent >= datetime(\'now\', \'-1 hour\')))))')
  */
 function fetchPending(DataObject $db): iterable
 {
-    $stmt = $db->prepare('SELECT D.ROWID AS id, email, subject, date_scheduled
+    $stmt = $db->prepare('SELECT D.id AS id, email, subject, date_scheduled
     FROM deliveries D
-    INNER JOIN list_contacts LC ON LC.ROWID = D.list_contact_id
-    INNER JOIN contacts C ON C.ROWID = LC.contact_id
-    INNER JOIN messages M ON M.ROWID = D.message_id
+    INNER JOIN list_contacts LC ON LC.id = D.list_contact_id
+    INNER JOIN contacts C ON C.id = LC.contact_id
+    INNER JOIN messages M ON M.id = D.message_id
     WHERE LC.date_unsubscribed IS NULL
     AND D.date_scheduled < CURRENT_TIMESTAMP
     AND D.date_sent IS NULL
@@ -157,5 +157,5 @@ function setDelivered(DataObject $db, int $deliveryId): void
 {
     $db->prepare('UPDATE deliveries
     SET date_sent = CURRENT_TIMESTAMP
-    WHERE ROWID = ?')->execute([$deliveryId]);
+    WHERE id = ?')->execute([$deliveryId]);
 }

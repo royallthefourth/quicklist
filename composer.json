@@ -39,7 +39,6 @@
             "src/Db/User.php",
             "src/Layout/Partial.php",
             "src/Common.php",
-            "src/Contact.php",
             "src/Delivery.php",
             "src/MailingList.php",
             "src/Message.php",

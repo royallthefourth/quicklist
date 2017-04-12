@@ -10,17 +10,22 @@ function add(\PDO $db, string $email): void
         ->execute([$email]);
 }
 
-function addBulk(DataObject $db, array $emails): void
+function addBulk(DataObject $db, iterable $emails): int
 {
+    $count = 0;
+    $db->beginTransaction();
     $stmt = $db->prepare('INSERT OR IGNORE INTO contacts(email) VALUES(?)');
     foreach ($emails as $email) {
         $stmt->execute([$email]);
+        $count++;
     }
+    $db->commit();
+    return $count;
 }
 
 function all(DataObject $db): iterable
 {
-    $stmt = $db->query('SELECT ROWID AS id, * FROM contacts');
+    $stmt = $db->query('SELECT * FROM contacts');
     while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
         yield $row;
     }
@@ -28,20 +33,20 @@ function all(DataObject $db): iterable
 
 function count(DataObject $db): int
 {
-    return $db->query('SELECT COUNT(ROWID) FROM contacts')->fetch(\PDO::FETCH_NUM)[0];
+    return $db->query('SELECT COUNT(id) FROM contacts')->fetch(\PDO::FETCH_NUM)[0];
 }
 
 function oneById(DataObject $db, int $contactId): array
 {
     return $db
-        ->prepare('SELECT ROWID AS id, * FROM contacts WHERE ROWID = ?')
+        ->prepare('SELECT * FROM contacts WHERE id = ?')
         ->execute([$contactId])
         ->fetch(\PDO::FETCH_ASSOC);
 }
 
 function paginated(DataObject $db, int $page = 1, int $perPage = 50): iterable
 {
-    $stmt = $db->prepare('SELECT ROWID AS id, *
+    $stmt = $db->prepare('SELECT *
 FROM contacts
 ORDER BY date_added DESC
 LIMIT ? OFFSET ?')

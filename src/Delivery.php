@@ -14,9 +14,9 @@ function appendUnsubLink(string $body, string $hash, string $domain, string $pre
     return "{$body}\n\nIf you wish to unsubscribe, click here: https://{$domain}/{$prefix}unsubscribe/{$hash}";
 }
 
-function messageHash(int $listContactId): string
+function messageHash($item): string
 {
-    return sha1($listContactId . time());
+    return sha1($item . time());
 }
 
 /**

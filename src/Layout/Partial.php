@@ -15,6 +15,7 @@ function nav(string $webPrefix): string
         <ul>
         <li><a href="{$webPrefix}/">dashboard</a></li>
         <li><a href="{$webPrefix}/contact/1">contacts</a></li>
+        <li><a href="{$webPrefix}/list/1">lists</a></li>
         <li><a href="{$webPrefix}/message/1">messages</a></li>
         <li><a href="{$webPrefix}/logout">logout</a></li>
 </ul>
