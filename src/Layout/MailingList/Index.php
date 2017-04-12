@@ -32,9 +32,9 @@ final class Index implements LayoutInterface
             $rows .= <<<row
 <tr>
 <td>{$name}</td>
-<td><a href="{$this->webPrefix}/list/{$id}/contacts">{$contacts}</a></td>
-<td><a href="{$this->webPrefix}/list/{$id}/messages">{$messages}</a></td>
-<td><a href="{$this->webPrefix}/list/{$id}/deliveries">{$deliveries}</a></td>
+<td><a href="{$this->webPrefix}/list/{$id}/contacts/1">{$contacts}</a></td>
+<td><a href="{$this->webPrefix}/list/{$id}/messages/1">{$messages}</a></td>
+<td><a href="{$this->webPrefix}/list/{$id}/deliveries/1">{$deliveries}</a></td>
 </tr>
 row;
         }
