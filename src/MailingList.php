@@ -15,7 +15,7 @@ function optIn(DataObject $db, string $listName, string $email, string $domain):
 
     \RoyallTheFourth\QuickList\Db\Delivery\add(
         $db,
-        \RoyallTheFourth\QuickList\Db\Message\add($db, "{$listName} Confirmation", $body),
+        \RoyallTheFourth\QuickList\Db\Message\add($db, "{$listName} Confirmation", $body, 1),
         MailingList\getId($db, $listName),
         $email,
         new \DateTimeImmutable(),

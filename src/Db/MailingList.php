@@ -89,7 +89,8 @@ VALUES(?,
 INNER JOIN contacts C ON C.ROWID = LC.contact_id
 WHERE C.email = ? AND LC.list_id = ?
  ORDER BY LC.date_added DESC LIMIT 1');
-    $insertMessage = $db->prepare('INSERT OR IGNORE INTO messages(subject, body, list_contact_id) VALUES(?, ?, ?)');
+    $insertMessage = $db
+        ->prepare('INSERT OR IGNORE INTO messages(subject, body, list_contact_id, from_system) VALUES(?, ?, ?, 1)');
     $getMessageId = $db
         ->prepare('SELECT id FROM messages WHERE list_contact_id = ? ORDER BY date_added DESC LIMIT 1');
     $insertDelivery = $db
