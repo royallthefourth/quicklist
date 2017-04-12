@@ -41,7 +41,9 @@ final class LoggedOut implements LayoutInterface
             {$this->flash}
             {$this->body}
 </main>
-<footer></footer>
+<footer>
+<a href="https://quicklist.email">Quicklist</a> 
+<a href="https://github.com/royallthefourth/quicklist/blob/master/CHANGES.md">v1.0</a></footer>
 </header>
 </body>
 </head>

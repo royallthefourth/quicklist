@@ -132,11 +132,7 @@ label {
 
 footer {
     text-align: center;
-    font-size: 36px;
-}
-
-footer a {
-    color: #212121;
+    font-size: 1rem;
 }
 
 footer a:hover {
