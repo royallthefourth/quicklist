@@ -36,7 +36,6 @@ final class Contacts implements LayoutInterface
                  'date_added' => $date_added,
                  'date_optin' => $date_optin,
                  'date_unsubscribed' => $date_unsubscribed]) {
-
             $date_added = localDate($date_added, $this->timezone);
             $date_optin = localDate($date_optin, $this->timezone);
             $date_unsubscribed = localDate($date_unsubscribed, $this->timezone);
@@ -50,6 +49,7 @@ final class Contacts implements LayoutInterface
 </tr>
 row;
         }
+
         $table = <<<table
 <table>
 <caption>{$this->listName} Contacts</caption>
@@ -67,6 +67,6 @@ row;
 </table>
 {$this->pagination}
 table;
-        return (new LoggedIn('Lists', $table, $this->webPrefix))->render();
+        return (new LoggedIn("{$this->listName} Contacts", $table, $this->webPrefix))->render();
     }
 }
