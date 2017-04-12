@@ -17,3 +17,11 @@ function getByName(DataObject $db, string $name): array
     }
     return [];
 }
+
+function isValidUserId(DataObject $db, int $id): bool
+{
+    return is_numeric($db
+        ->prepare('SELECT id FROM users WHERE id = ?')
+        ->execute([$id])
+        ->fetch(\PDO::FETCH_NUM)[0]);
+}

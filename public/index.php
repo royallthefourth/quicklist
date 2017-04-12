@@ -16,7 +16,10 @@ $deps = [
     ':webPrefix' => $config['web_prefix']
 ];
 
-$routes = RoyallTheFourth\QuickList\Routes\common($config['web_prefix'], isset($_SESSION['userId']));
+$routes = RoyallTheFourth\QuickList\Routes\common(
+    $config['web_prefix'],
+    Db\User\isValidUserId($db, $_SESSION['userId'] ?? -1)
+);
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) use ($routes) {
     foreach ($routes as $route) {
