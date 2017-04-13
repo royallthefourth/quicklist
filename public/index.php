@@ -43,7 +43,7 @@ switch ($disposition) {
         $handlerType = RoyallTheFourth\QuickList\Action\NotFound\Get::class; // this fall-through is intentional
     case FastRoute\Dispatcher::FOUND:
         /** @var \RoyallTheFourth\QuickList\Action\ActionInterface $handler */
-        (new \Zend\Diactoros\Response\SapiEmitter())
+        (new \Zend\Diactoros\Response\SapiStreamEmitter())
             ->emit((new Auryn\Injector)
                 ->make($handlerType, $deps)
                 ->execute());
