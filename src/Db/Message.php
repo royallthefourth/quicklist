@@ -9,14 +9,13 @@ use RoyallTheFourth\SmoothPdo\DataObject;
  * @param DataObject $db
  * @param string $subject
  * @param string $body
- * @param int $fromSystem Is this message from the system? eg optin
  * @return int the ID of the message
  */
-function add(DataObject $db, string $subject, string $body, int $fromSystem = 0): int
+function add(DataObject $db, string $subject, string $body): int
 {
     $db->beginTransaction()
-        ->prepare('INSERT INTO messages(subject, body, from_system) VALUES(?, ?, ?)')
-        ->execute([$subject, $body, $fromSystem]);
+        ->prepare('INSERT INTO messages(subject, body) VALUES(?, ?)')
+        ->execute([$subject, $body]);
     $stmt = $db->query('SELECT last_insert_rowid() AS id');
     $db->commit();
     return $stmt->fetch(\PDO::FETCH_NUM)[0];
@@ -24,7 +23,7 @@ function add(DataObject $db, string $subject, string $body, int $fromSystem = 0)
 
 function all(DataObject $db): array
 {
-    if (!($rs = $db->query('SELECT * FROM messages WHERE from_system = 0')
+    if (!($rs = $db->query('SELECT * FROM messages WHERE list_contact_id IS NULL')
         ->fetchAll(\PDO::FETCH_ASSOC))
     ) {
         $rs = [];
@@ -35,7 +34,7 @@ function all(DataObject $db): array
 
 function count(DataObject $db): int
 {
-    return $db->query('SELECT COUNT(id) FROM messages WHERE from_system = 0')->fetch(\PDO::FETCH_NUM)[0];
+    return $db->query('SELECT COUNT(id) FROM messages WHERE list_contact_id IS NULL')->fetch(\PDO::FETCH_NUM)[0];
 }
 
 function oneById(DataObject $db, int $messageId): array
@@ -50,7 +49,7 @@ function paginated(DataObject $db, int $page = 1, int $perPage = 50): iterable
 {
     $stmt = $db->prepare('SELECT *
 FROM messages
-WHERE from_system = 0
+WHERE list_contact_id IS NULL
 ORDER BY date_added DESC
 LIMIT ? OFFSET ?')
         ->execute([$perPage, ($page - 1) * $perPage]);

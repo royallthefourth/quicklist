@@ -13,7 +13,8 @@ class Base extends TestCase
 
     protected function dbConnection(): DataObject
     {
-        return new DataObject('sqlite:'. static::$dbPath);
+        return (new DataObject('sqlite:'. static::$dbPath))
+            ->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 
     public static function setUpBeforeClass()

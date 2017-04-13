@@ -39,7 +39,7 @@ class InitialSetup extends AbstractMigration
             subject TEXT,
             body TEXT,
             date_added DATETIME DEFAULT CURRENT_TIMESTAMP,
-            list_contact_id INTEGER REFERENCES list_contacts(id) -- for optin messages
+            list_contact_id INTEGER REFERENCES list_contacts(id) -- for optin messages and other non-list things
           );
           
           CREATE TABLE deliveries(

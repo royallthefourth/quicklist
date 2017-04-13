@@ -18,6 +18,7 @@ function loggedIn(string $webPrefix): array
         ['GET', "{$webPrefix}/message/add", Action\Message\Add\Get::class],
         ['POST', "{$webPrefix}/message/add", Action\Message\Add\Post::class],
         ['GET', "{$webPrefix}/list/{page:\\d+}", Action\MailingList\Index\Get::class],
+        ['GET', "{$webPrefix}/list/view/{listId:\\d+}", Action\MailingList\View\Get::class],
         ['GET', "{$webPrefix}/list/{listId:\\d+}/contacts/{page:\\d+}", Action\MailingList\Contacts\Get::class],
     ];
 }

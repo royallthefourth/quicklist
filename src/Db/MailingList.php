@@ -90,7 +90,7 @@ INNER JOIN contacts C ON C.ROWID = LC.contact_id
 WHERE C.email = ? AND LC.list_id = ?
  ORDER BY LC.date_added DESC LIMIT 1');
     $insertMessage = $db
-        ->prepare('INSERT OR IGNORE INTO messages(subject, body, list_contact_id, from_system) VALUES(?, ?, ?, 1)');
+        ->prepare('INSERT OR IGNORE INTO messages(subject, body, list_contact_id) VALUES(?, ?, ?)');
     $getMessageId = $db
         ->prepare('SELECT id FROM messages WHERE list_contact_id = ? ORDER BY date_added DESC LIMIT 1');
     $insertDelivery = $db
@@ -114,6 +114,42 @@ VALUES(?, ?, CURRENT_TIMESTAMP)');
 function count(DataObject $db): int
 {
     return $db->query('SELECT COUNT(id) FROM lists')->fetch(\PDO::FETCH_NUM)[0];
+}
+
+function countActiveContacts(DataObject $db, int $listId): int
+{
+    return $db->prepare('SELECT COUNT(LC.id)
+FROM list_contacts LC
+WHERE LC.list_id = ? 
+AND LC.date_unsubscribed IS NULL
+AND LC.date_optin IS NOT NULL
+AND LC.date_removed IS NULL')
+        ->execute([$listId])
+        ->fetch(\PDO::FETCH_NUM)[0];
+}
+
+function countMessages(DataObject $db, int $listId): int
+{
+    return $db->prepare('SELECT COUNT(M.id)
+FROM lists L
+INNER JOIN list_contacts LC ON LC.list_id = L.id
+INNER JOIN deliveries D ON D.list_contact_id = LC.id
+INNER JOIN messages M ON M.id = D.message_id
+WHERE LC.list_id = ? 
+AND M.list_contact_id IS NULL')
+        ->execute([$listId])
+        ->fetch(\PDO::FETCH_NUM)[0];
+}
+
+function countSentDeliveries(DataObject $db, int $listId): int
+{
+    return $db->prepare('SELECT COUNT(D.id) 
+FROM deliveries D
+INNER JOIN list_contacts LC ON LC.list_id = D.id
+WHERE LC.list_id = ? 
+AND D.date_sent IS NOT NULL')
+        ->execute([$listId])
+        ->fetch(\PDO::FETCH_NUM)[0];
 }
 
 function getId(DataObject $db, string $name): int
