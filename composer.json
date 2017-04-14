@@ -38,11 +38,15 @@
             "src/Db/Message.php",
             "src/Db/User.php",
             "src/Layout/Partial.php",
+            "src/Route/Base.php",
+            "src/Route/Contact.php",
+            "src/Route/Message.php",
+            "src/Route/MailingList.php",
             "src/Common.php",
             "src/Delivery.php",
             "src/MailingList.php",
             "src/Message.php",
-            "src/Routes.php"
+            "src/Route.php"
         ]
     },
     "autoload-dev": {

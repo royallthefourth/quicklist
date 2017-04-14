@@ -2,6 +2,11 @@
 
 namespace RoyallTheFourth\QuickList\Layout\Partial;
 
+use RoyallTheFourth\QuickList\Route\Base;
+use RoyallTheFourth\QuickList\Route\Contact;
+use RoyallTheFourth\QuickList\Route\MailingList;
+use RoyallTheFourth\QuickList\Route\Message;
+
 function flash(string $message = ''): string
 {
     return <<<flash
@@ -11,17 +16,24 @@ flash;
 
 function nav(string $webPrefix): string
 {
+    $dashboard = Base\home($webPrefix);
+    $contacts = Contact\index($webPrefix);
+    $lists = MailingList\index($webPrefix);
+    $messages = Message\index($webPrefix);
+    $logout = Base\logout($webPrefix);
+
     return <<<nav
         <ul>
-        <li><a href="{$webPrefix}/">dashboard</a></li>
-        <li><a href="{$webPrefix}/contact/1">contacts</a></li>
-        <li><a href="{$webPrefix}/list/1">lists</a></li>
-        <li><a href="{$webPrefix}/message/1">messages</a></li>
-        <li><a href="{$webPrefix}/logout">logout</a></li>
+        <li><a href="{$dashboard}">dashboard</a></li>
+        <li><a href="{$contacts}">contacts</a></li>
+        <li><a href="{$lists}">lists</a></li>
+        <li><a href="{$messages}">messages</a></li>
+        <li><a href="{$logout}">logout</a></li>
 </ul>
 nav;
 }
 
+// TODO find all usages and make sure they use a route function as path
 function pagination(int $currentPage, int $total, int $perPage, string $path): string
 {
     if ($total <= $perPage) {
@@ -33,7 +45,7 @@ function pagination(int $currentPage, int $total, int $perPage, string $path): s
         if ($i === $currentPage) {
             $links .= "<li>{$i}</li>";
         } else {
-            $links .= "<li><a href=\"{$path}/{$i}\">{$i}</a></li>";
+            $links .= "<li><a href=\"{$path}{$i}\">{$i}</a></li>";
         }
     }
 

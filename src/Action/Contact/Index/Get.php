@@ -8,6 +8,7 @@ use function RoyallTheFourth\QuickList\Db\Contact\paginated;
 use function RoyallTheFourth\QuickList\Db\Contact\count;
 use function RoyallTheFourth\QuickList\Layout\Partial\pagination;
 use RoyallTheFourth\QuickList\Layout\Contact\Index;
+use RoyallTheFourth\QuickList\Route\Contact;
 use RoyallTheFourth\SmoothPdo\DataObject;
 use Zend\Diactoros\Response\HtmlResponse;
 
@@ -35,7 +36,7 @@ final class Get implements ActionInterface
                 paginated($this->db, $this->page, $this->perPage),
                 $this->webPrefix,
                 $this->timezone,
-                pagination($this->page, count($this->db), $this->perPage, "{$this->webPrefix}/contact")
+                pagination($this->page, count($this->db), $this->perPage, Contact\index($this->webPrefix, ''))
             ))->render()
         );
     }

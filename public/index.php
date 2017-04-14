@@ -16,7 +16,7 @@ $deps = [
     ':webPrefix' => $config['web_prefix']
 ];
 
-$routes = RoyallTheFourth\QuickList\Routes\common(
+$routes = RoyallTheFourth\QuickList\Route\common(
     $config['web_prefix'],
     Db\User\isValidUserId($db, $_SESSION['userId'] ?? -1)
 );

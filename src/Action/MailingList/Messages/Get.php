@@ -1,15 +1,15 @@
 <?php
 
-namespace RoyallTheFourth\QuickList\Action\MailingList\Contacts;
+namespace RoyallTheFourth\QuickList\Action\MailingList\Messages;
 
 use Psr\Http\Message\ResponseInterface;
 use RoyallTheFourth\QuickList\Action\ActionInterface;
-use function RoyallTheFourth\QuickList\Db\MailingList\countAllContacts;
-use function RoyallTheFourth\QuickList\Db\MailingList\paginatedContactsRaw;
+use function RoyallTheFourth\QuickList\Db\MailingList\countMessages;
+use function RoyallTheFourth\QuickList\Db\MailingList\paginatedMessagesSentToList;
 use function RoyallTheFourth\QuickList\Db\MailingList\getName;
+use RoyallTheFourth\QuickList\Layout\MailingList\Messages;
 use function RoyallTheFourth\QuickList\Layout\Partial\pagination;
-use \RoyallTheFourth\QuickList\Route\MailingList;
-use RoyallTheFourth\QuickList\Layout\MailingList\Contacts;
+use function RoyallTheFourth\QuickList\Route\MailingList\messages;
 use RoyallTheFourth\SmoothPdo\DataObject;
 use Zend\Diactoros\Response\HtmlResponse;
 
@@ -19,33 +19,30 @@ final class Get implements ActionInterface
     private $listId;
     private $page;
     private $perPage;
-    private $timezone;
     private $webPrefix;
 
-    public function __construct(DataObject $db, int $page, int $listId, string $webPrefix, \DateTimeZone $timezone)
+    public function __construct(DataObject $db, int $page, int $listId, string $webPrefix)
     {
         $this->db = $db;
         $this->listId = $listId;
         $this->page = $page;
         $this->perPage = 50;
-        $this->timezone = $timezone;
         $this->webPrefix = $webPrefix;
     }
 
     public function execute(): ResponseInterface
     {
         return new HtmlResponse(
-            (new Contacts(
-                paginatedContactsRaw($this->db, $this->listId, $this->page, $this->perPage),
+            (new Messages(
+                paginatedMessagesSentToList($this->db, $this->listId, $this->page, $this->perPage),
                 getName($this->db, $this->listId),
                 $this->webPrefix,
                 pagination(
                     $this->page,
-                    countAllContacts($this->db, $this->listId),
+                    countMessages($this->db, $this->listId),
                     $this->perPage,
-                    MailingList\contacts($this->webPrefix, $this->listId, '')
-                ),
-                $this->timezone
+                    messages($this->webPrefix, $this->listId, '')
+                )
             ))->render()
         );
     }

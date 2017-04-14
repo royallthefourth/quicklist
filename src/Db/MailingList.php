@@ -100,13 +100,13 @@ VALUES(?, ?, CURRENT_TIMESTAMP)');
     $db->beginTransaction();
 
     foreach ($emails as $email) {
-            $hash = messageHash($listId . $email);
-            $insertEmail->execute([$email]);
-            $insertListContact->execute([$listId, $email, $hash]);
-            $listContactId = $getListContactId->execute([$email, $listId])->fetch(\PDO::FETCH_NUM)[0];
-            $insertMessage->execute(["{$listName} Confirmation", optInBody($listName, $domain, $hash), $listContactId]);
-            $messageId = $getMessageId->execute([$listContactId])->fetch(\PDO::FETCH_NUM)[0];
-            $insertDelivery->execute([$messageId, $listContactId]);
+        $hash = messageHash($listId . $email);
+        $insertEmail->execute([$email]);
+        $insertListContact->execute([$listId, $email, $hash]);
+        $listContactId = $getListContactId->execute([$email, $listId])->fetch(\PDO::FETCH_NUM)[0];
+        $insertMessage->execute(["{$listName} Confirmation", optInBody($listName, $domain, $hash), $listContactId]);
+        $messageId = $getMessageId->execute([$listContactId])->fetch(\PDO::FETCH_NUM)[0];
+        $insertDelivery->execute([$messageId, $listContactId]);
     }
     $db->commit();
 }
@@ -123,6 +123,16 @@ FROM list_contacts LC
 WHERE LC.list_id = ? 
 AND LC.date_unsubscribed IS NULL
 AND LC.date_optin IS NOT NULL
+AND LC.date_removed IS NULL')
+        ->execute([$listId])
+        ->fetch(\PDO::FETCH_NUM)[0];
+}
+
+function countAllContacts(DataObject $db, int $listId): int
+{
+    return $db->prepare('SELECT COUNT(LC.id)
+FROM list_contacts LC
+WHERE LC.list_id = ?
 AND LC.date_removed IS NULL')
         ->execute([$listId])
         ->fetch(\PDO::FETCH_NUM)[0];
@@ -213,6 +223,21 @@ WHERE LC.list_id = ?
       LIMIT ? OFFSET ?
       ')
         ->execute([$listId, $perPage, ($page - 1) * $perPage]);
+    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        yield $row;
+    }
+}
+
+function paginatedMessagesSentToList(DataObject $db, int $listId, int $page, int $perPage): iterable
+{
+    $stmt = $db->prepare('SELECT DISTINCT M.id, subject
+FROM messages M
+  INNER JOIN deliveries D ON D.message_id = M.id
+  INNER JOIN list_contacts LC ON LC.id = D.list_contact_id
+WHERE LC.list_id = ?
+AND M.list_contact_id IS NULL
+LIMIT ? OFFSET ?')->execute([$listId, $perPage, ($page - 1) * $perPage]);
+
     while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
         yield $row;
     }
