@@ -4,11 +4,11 @@ namespace RoyallTheFourth\QuickList\Layout\MailingList;
 
 use RoyallTheFourth\QuickList\Layout\Base\LoggedIn;
 use RoyallTheFourth\QuickList\Layout\LayoutInterface;
+use RoyallTheFourth\QuickList\Route\MailingList;
 
 final class View implements LayoutInterface
 {
     private $activeContacts;
-    private $deliveries;
     private $listId;
     private $messages;
     private $webPrefix;
@@ -19,7 +19,6 @@ final class View implements LayoutInterface
         string $name,
         int $messages,
         int $activeContacts,
-        int $deliveries,
         string $webPrefix
     ) {
         $this->listId = $listId;
@@ -27,11 +26,13 @@ final class View implements LayoutInterface
         $this->name = $name;
         $this->messages = $messages;
         $this->activeContacts = $activeContacts;
-        $this->deliveries = $deliveries;
     }
 
     public function render(): string
     {
+        $contactsUrl = MailingList\contacts($this->webPrefix, $this->listId);
+        $messagesUrl = MailingList\messages($this->webPrefix, $this->listId);
+
         $table = <<<table
 <table>
 <caption>{$this->name}</caption>
@@ -39,16 +40,14 @@ final class View implements LayoutInterface
 <tr>
 <th>active contacts</th>
 <th>unique messages</th>
-<th>deliveries sent</th>
 </tr>
 </thead>
 <tbody>
-<td><a href="{$this->webPrefix}/list/{$this->listId}/contacts/1">{$this->activeContacts}</a></td>
-<td><a href="{$this->webPrefix}/list/{$this->listId}/messages/1">{$this->messages}</a></td>
-<td><a href="{$this->webPrefix}/list/{$this->listId}/deliveries/1">{$this->deliveries}</a></td>
+<td><a href="{$contactsUrl}">{$this->activeContacts}</a></td>
+<td><a href="{$messagesUrl}">{$this->messages}</a></td>
 </tbody>
 </table>
 table;
-        return (new LoggedIn('Lists', $table, $this->webPrefix))->render();
+        return (new LoggedIn($this->name, $table, $this->webPrefix))->render();
     }
 }

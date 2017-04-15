@@ -33,7 +33,6 @@ final class Get implements ActionInterface
                 getName($this->db, $this->listId),
                 countMessages($this->db, $this->listId),
                 countActiveContacts($this->db, $this->listId),
-                countSentDeliveries($this->db, $this->listId),
                 $this->webPrefix
             ))->render()
         );
