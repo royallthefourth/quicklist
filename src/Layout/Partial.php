@@ -31,7 +31,6 @@ function nav(string $webPrefix): string
 nav;
 }
 
-// TODO find all usages and make sure they use a route function as path
 function pagination(int $currentPage, int $total, int $perPage, string $path): string
 {
     if ($total <= $perPage) {

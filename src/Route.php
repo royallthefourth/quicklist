@@ -30,7 +30,9 @@ function loggedIn(string $webPrefix): array
         ['POST', MailingList\add($webPrefix), Action\MailingList\Add\Post::class],
         ['GET', MailingList\addContacts($webPrefix, '{listId:\d+}'), Action\MailingList\AddContacts\Get::class],
         ['POST', MailingList\addContacts($webPrefix, '{listId:\d+}'), Action\MailingList\AddContacts\Post::class],
-        ['GET', Delivery\index($webPrefix, '{page:\d+}'), Action\Delivery\Index\Get::class]
+        ['GET', Delivery\index($webPrefix, '{page:\d+}'), Action\Delivery\Index\Get::class],
+        ['GET', Delivery\schedule($webPrefix), Action\Delivery\Schedule\Get::class],
+        ['POST', Delivery\schedule($webPrefix), Action\Delivery\Schedule\Post::class]
     ];
 }
 

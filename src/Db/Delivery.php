@@ -52,14 +52,16 @@ function addBulk(DataObject $db, iterable $deliveries): void
 {
     $stmt = $db->prepare('INSERT INTO deliveries(message_id, list_contact_id, date_scheduled, unsub_hash)
 VALUES(?, ?, ?, ?)');
+    $db->beginTransaction();
     foreach ($deliveries as $delivery) {
         $stmt->execute([
             $delivery['messageId'],
             $delivery['listContactId'],
-            $delivery['date']->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d H:i:s'),
+            $delivery['date'],
             $delivery['hash']
         ]);
     }
+    $db->commit();
 }
 
 function allByContact(DataObject $db, int $contactId): iterable

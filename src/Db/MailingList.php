@@ -61,11 +61,11 @@ function allContactsDeliverable(DataObject $db, int $listId): iterable
     $stmt = $db
         ->prepare('
 SELECT
-  LC.ROWID AS id,
+  LC.id AS id,
   email,
   LC.date_added
 FROM list_contacts LC
-  INNER JOIN contacts C ON C.ROWID = LC.contact_id
+  INNER JOIN contacts C ON C.id = LC.contact_id
 WHERE LC.list_id = ?
       AND date_optin IS NOT NULL
       AND date_removed IS NULL

@@ -37,6 +37,11 @@ function count(DataObject $db): int
     return $db->query('SELECT COUNT(id) FROM messages WHERE list_contact_id IS NULL')->fetch(\PDO::FETCH_NUM)[0];
 }
 
+function getName(DataObject $db, int $messageId): string
+{
+    return $db->prepare('SELECT subject FROM messages WHERE id = ?')->execute([$messageId])->fetch(\PDO::FETCH_NUM)[0];
+}
+
 function oneById(DataObject $db, int $messageId): array
 {
     return $db

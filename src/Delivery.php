@@ -2,10 +2,8 @@
 
 namespace RoyallTheFourth\QuickList\Delivery;
 
-use function RoyallTheFourth\QuickList\Db\Delivery\addBulk;
 use function RoyallTheFourth\QuickList\Db\Delivery\fetchDue;
 use function RoyallTheFourth\QuickList\Db\Delivery\setDelivered;
-use RoyallTheFourth\QuickList\Db\MailingList;
 use RoyallTheFourth\SmoothPdo\DataObject;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
@@ -59,31 +57,16 @@ function process(DataObject $db, array $config, \PHPMailer $mailer): int
     return $count;
 }
 
-/**
- * @param DataObject $db
- * @param int $messageId
- * @param int $listId
- * @param \DateTimeImmutable $sendDate
- * @return int Number of messages scheduled
- */
-function schedule(DataObject $db, int $messageId, int $listId, \DateTimeImmutable $sendDate): int
+function schedule(iterable $contacts, int $messageId, \DateTimeImmutable $sendDate): iterable
 {
-    $count = 0;
-    $contacts = MailingList\allContactsDeliverable($db, $listId);
-    $deliveries = [];
-
     foreach ($contacts as $contact) {
-        $count++;
-        $deliveries[] = [
+        yield [
             'messageId' => $messageId,
             'listContactId' => $contact['id'],
-            'date' => $sendDate,
+            'date' => $sendDate->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d H:i:s'),
             'hash' => messageHash($contact['id'])
         ];
     }
-
-    addBulk($db, $deliveries);
-    return $count;
 }
 
 function sendsPerMinute(int $hourlySendLimit): int

@@ -28,7 +28,7 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     }
 });
 
-$dispatch = $dispatcher->dispatch($request->getMethod(), $request->getRequestTarget());
+$dispatch = $dispatcher->dispatch($request->getMethod(), $request->getUri()->getPath());
 
 $disposition = $dispatch[0];
 $handlerType = $dispatch[1] ?? null;

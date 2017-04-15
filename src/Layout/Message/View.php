@@ -5,6 +5,7 @@ namespace RoyallTheFourth\QuickList\Layout\Message;
 use function RoyallTheFourth\QuickList\Common\localDate;
 use RoyallTheFourth\QuickList\Layout\Base\LoggedIn;
 use RoyallTheFourth\QuickList\Layout\LayoutInterface;
+use RoyallTheFourth\QuickList\Route;
 
 final class View implements LayoutInterface
 {
@@ -33,13 +34,15 @@ final class View implements LayoutInterface
         $dateAdded = localDate($this->message['date_added'], $this->timezone);
         $deliveries = $this->deliveryTable($this->deliveries, $this->webPrefix);
         $lists = $this->listDropdown($this->lists);
+        $scheduleUrl = Route\Delivery\schedule($this->webPrefix);
+        $editUrl = Route\Message\edit($this->webPrefix, $this->message['id']);
 
         $contactInfo = <<<contactInfo
 <h1>{$this->message['subject']} 
-<span>added {$dateAdded} <a href="{$this->webPrefix}/message/edit/{$this->message['id']}">edit</a></span></h1>
+<span>added {$dateAdded} <a href="{$editUrl}">edit</a></span></h1>
 <section>
 <pre>{$this->message['body']}</pre>
-<form action="{$this->webPrefix}/delivery/schedule" method="GET">
+<form action="{$scheduleUrl}" method="GET">
 <input type="hidden" name="messageId" value="{$this->message['id']}" />
 Send this message to a list: <select name="listId">{$lists}</select>
 <button>Schedule</button>
@@ -62,12 +65,16 @@ contactInfo;
                  'date_sent' => $dateSent]) {
             $dateScheduled = localDate($dateScheduled, $this->timezone);
             $dateSent = localDate($dateSent, $this->timezone);
-            $rows .= "<tr>
-<td><a href=\"{$webPrefix}/contact/view/{$contactId}\">{$email}</a></td>
-<td><a href=\"{$webPrefix}/list/view/{$listId}\">$listName</a></td>
+            $contactUrl = Route\Contact\view($this->webPrefix, $contactId);
+            $listUrl = Route\MailingList\view($this->webPrefix, $listId);
+            $rows .= <<<row
+<tr>
+<td><a href="{$contactUrl}">{$email}</a></td>
+<td><a href="{$listUrl}">$listName</a></td>
 <td>{$dateScheduled}</td>
 <td>{$dateSent}</td>
-</tr>";
+</tr>
+row;
         }
 
         return <<<table
