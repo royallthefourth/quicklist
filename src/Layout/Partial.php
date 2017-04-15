@@ -3,7 +3,7 @@
 namespace RoyallTheFourth\QuickList\Layout\Partial;
 
 use RoyallTheFourth\QuickList\Route\Base;
-use RoyallTheFourth\QuickList\Route\Contact;
+use RoyallTheFourth\QuickList\Route\Delivery;
 use RoyallTheFourth\QuickList\Route\MailingList;
 use RoyallTheFourth\QuickList\Route\Message;
 
@@ -16,16 +16,14 @@ flash;
 
 function nav(string $webPrefix): string
 {
-    $dashboard = Base\home($webPrefix);
-    $contacts = Contact\index($webPrefix);
+    $deliveries = Delivery\index($webPrefix);
     $lists = MailingList\index($webPrefix);
     $messages = Message\index($webPrefix);
     $logout = Base\logout($webPrefix);
 
     return <<<nav
         <ul>
-        <li><a href="{$dashboard}">dashboard</a></li>
-        <li><a href="{$contacts}">contacts</a></li>
+        <li><a href="{$deliveries}">deliveries</a></li>
         <li><a href="{$lists}">lists</a></li>
         <li><a href="{$messages}">messages</a></li>
         <li><a href="{$logout}">logout</a></li>

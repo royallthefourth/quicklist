@@ -93,6 +93,11 @@ function allByMessage(DataObject $db, int $messageId): iterable
     }
 }
 
+function count(DataObject $db): int
+{
+    return $db->query('SELECT COUNT(id) FROM deliveries')->fetch(\PDO::FETCH_NUM)[0];
+}
+
 /**
  * Fetch the upcoming deliveries that fit within the hourly send limit.
  *
@@ -141,6 +146,22 @@ function fetchPending(DataObject $db): iterable
     AND D.date_canceled IS NULL
     ORDER BY D.date_scheduled ASC')
         ->execute();
+
+    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        yield $row;
+    }
+}
+
+function paginated(DataObject $db, int $perPage, int $page): iterable
+{
+    $stmt = $db->prepare('SELECT D.message_id, M.subject, C.id AS contact_id, C.email, date_scheduled, date_sent
+FROM deliveries D
+  INNER JOIN messages M ON D.message_id = M.id
+  INNER JOIN list_contacts LC ON D.list_contact_id = LC.id
+  INNER JOIN contacts C ON LC.contact_id = C.id
+ORDER BY date_scheduled DESC
+LIMIT ? OFFSET ?')
+        ->execute([$perPage, ($page - 1) * $perPage]);
 
     while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
         yield $row;

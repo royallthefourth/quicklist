@@ -5,6 +5,7 @@ namespace RoyallTheFourth\QuickList\Route;
 use RoyallTheFourth\QuickList\Action;
 use RoyallTheFourth\QuickList\Route\Base;
 use RoyallTheFourth\QuickList\Route\Contact;
+use RoyallTheFourth\QuickList\Route\Delivery;
 use RoyallTheFourth\QuickList\Route\Message;
 use RoyallTheFourth\QuickList\Route\MailingList;
 
@@ -26,7 +27,8 @@ function loggedIn(string $webPrefix): array
         ['GET', MailingList\contacts($webPrefix, '{listId:\d+}', '{page:\d+}'), Action\MailingList\Contacts\Get::class],
         ['GET', MailingList\messages($webPrefix, '{listId:\d+}', '{page:\d+}'), Action\MailingList\Messages\Get::class],
         ['GET', MailingList\add($webPrefix), Action\MailingList\Add\Get::class],
-        ['POST', MailingList\add($webPrefix), Action\MailingList\Add\Post::class]
+        ['POST', MailingList\add($webPrefix), Action\MailingList\Add\Post::class],
+        ['GET', Delivery\index($webPrefix, '{page:\d+}'), Action\Delivery\Index\Get::class]
     ];
 }
 
