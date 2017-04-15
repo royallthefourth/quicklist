@@ -4,6 +4,7 @@ namespace RoyallTheFourth\QuickList\Layout\MailingList;
 
 use RoyallTheFourth\QuickList\Layout\Base\LoggedIn;
 use RoyallTheFourth\QuickList\Layout\LayoutInterface;
+use RoyallTheFourth\QuickList\Route\MailingList;
 
 final class Index implements LayoutInterface
 {
@@ -23,6 +24,7 @@ final class Index implements LayoutInterface
 
     public function render(): string
     {
+        $addList = MailingList\add($this->webPrefix);
         $rows = '';
         foreach ($this->lists as ['id' => $id,
                  'name' => $name,
@@ -40,6 +42,7 @@ row;
         }
         $table = <<<table
 <h1>Lists</h1>
+<a href="{$addList}">Add a list</a>
 <table>
 <thead>
 <tr>

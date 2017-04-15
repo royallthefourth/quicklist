@@ -6,10 +6,14 @@ use function RoyallTheFourth\QuickList\Delivery\messageHash;
 use function RoyallTheFourth\QuickList\MailingList\optInBody;
 use RoyallTheFourth\SmoothPdo\DataObject;
 
-function add(DataObject $db, string $name): void
+function add(DataObject $db, string $name): int
 {
-    $db->prepare('INSERT INTO lists(name) VALUES (?)')
+    $db->beginTransaction()
+        ->prepare('INSERT INTO lists(name) VALUES (?)')
         ->execute([$name]);
+    $stmt = $db->query('SELECT last_insert_rowid() AS id');
+    $db->commit();
+    return $stmt->fetch(\PDO::FETCH_NUM)[0];
 }
 
 function addContactBulkSkipOptIn(DataObject $db, int $listId, iterable $emails): void

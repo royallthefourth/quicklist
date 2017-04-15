@@ -25,6 +25,8 @@ function loggedIn(string $webPrefix): array
         ['GET', MailingList\view($webPrefix, '{listId:\d+}'), Action\MailingList\View\Get::class],
         ['GET', MailingList\contacts($webPrefix, '{listId:\d+}', '{page:\d+}'), Action\MailingList\Contacts\Get::class],
         ['GET', MailingList\messages($webPrefix, '{listId:\d+}', '{page:\d+}'), Action\MailingList\Messages\Get::class],
+        ['GET', MailingList\add($webPrefix), Action\MailingList\Add\Get::class],
+        ['POST', MailingList\add($webPrefix), Action\MailingList\Add\Post::class]
     ];
 }
 
