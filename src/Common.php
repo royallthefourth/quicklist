@@ -52,6 +52,16 @@ function localDate(?string $dateTime, \DateTimeZone $timezone): string
         ->format('Y-m-d H:i:s');
 }
 
+function onlyValidEmails(iterable $emails): iterable
+{
+    foreach ($emails as $email) {
+        $email = trim($email);
+        if (Validator::email()->validate($email)) {
+            yield $email;
+        }
+    }
+}
+
 function readEmailsFromConsole(): iterable
 {
     while ($email = trim(fgets(STDIN))) {

@@ -7,6 +7,11 @@ function add(string $webPrefix): string
     return "{$webPrefix}/list/add";
 }
 
+function addContacts(string $webPrefix, $listId): string
+{
+    return "{$webPrefix}/list/{$listId}/contacts/add";
+}
+
 function contacts(string $webPrefix, $listId, $page = 1): string
 {
     return "{$webPrefix}/list/{$listId}/contacts/{$page}";

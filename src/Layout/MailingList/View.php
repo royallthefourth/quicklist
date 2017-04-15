@@ -30,10 +30,12 @@ final class View implements LayoutInterface
 
     public function render(): string
     {
+        $addUrl = MailingList\addContacts($this->webPrefix, $this->listId);
         $contactsUrl = MailingList\contacts($this->webPrefix, $this->listId);
         $messagesUrl = MailingList\messages($this->webPrefix, $this->listId);
 
         $table = <<<table
+<a href="{$addUrl}">Add contacts</a>
 <table>
 <caption>{$this->name}</caption>
 <thead>

@@ -24,7 +24,7 @@ final class Form implements LayoutInterface
 
         $messageForm = <<<form
 <h1>{$title}</h1>
-<form class="message" method="POST">
+<form class="main" method="POST">
 {$messageIdField}
 <label for="subject">Subject</label>
 <input type="text" id="subject" name="subject" value="{$subject}" />

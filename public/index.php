@@ -12,6 +12,7 @@ $request = \Zend\Diactoros\ServerRequestFactory::fromGlobals();
 $deps = [
     ':db' => $db,
     ':request' => $request,
+    ':siteDomain' => $config['site_domain'],
     ':timezone' => new \DateTimeZone($config['default_timezone']),
     ':webPrefix' => $config['web_prefix']
 ];

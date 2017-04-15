@@ -28,6 +28,8 @@ function loggedIn(string $webPrefix): array
         ['GET', MailingList\messages($webPrefix, '{listId:\d+}', '{page:\d+}'), Action\MailingList\Messages\Get::class],
         ['GET', MailingList\add($webPrefix), Action\MailingList\Add\Get::class],
         ['POST', MailingList\add($webPrefix), Action\MailingList\Add\Post::class],
+        ['GET', MailingList\addContacts($webPrefix, '{listId:\d+}'), Action\MailingList\AddContacts\Get::class],
+        ['POST', MailingList\addContacts($webPrefix, '{listId:\d+}'), Action\MailingList\AddContacts\Post::class],
         ['GET', Delivery\index($webPrefix, '{page:\d+}'), Action\Delivery\Index\Get::class]
     ];
 }
