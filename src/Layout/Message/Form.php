@@ -27,9 +27,9 @@ final class Form implements LayoutInterface
 <form class="main" method="POST">
 {$messageIdField}
 <label for="subject">Subject</label>
-<input type="text" id="subject" name="subject" value="{$subject}" />
+<input required type="text" id="subject" name="subject" value="{$subject}" />
 <label for="body">Body</label>
-<textarea rows="12" id="body" name="body">{$body}</textarea>
+<textarea required rows="12" id="body" name="body">{$body}</textarea>
 <button>Submit</button>
 </form>
 form;
