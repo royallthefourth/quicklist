@@ -26,17 +26,12 @@ final class Index implements LayoutInterface
     {
         $addList = MailingList\add($this->webPrefix);
         $rows = '';
-        foreach ($this->lists as ['id' => $id,
-                 'name' => $name,
-                 'contacts' => $contacts,
-                 'messages' => $messages,
-                 'deliveries' => $deliveries]) {
+        foreach ($this->lists as ['id' => $id, 'name' => $name]) {
+            $url = MailingList\view($this->webPrefix, $id);
+
             $rows .= <<<row
 <tr>
-<td>{$name}</td>
-<td><a href="{$this->webPrefix}/list/{$id}/contacts/1">{$contacts}</a></td>
-<td><a href="{$this->webPrefix}/list/{$id}/messages/1">{$messages}</a></td>
-<td><a href="{$this->webPrefix}/list/{$id}/deliveries/1">{$deliveries}</a></td>
+<td><a href="{$url}">{$name}</a></td>
 </tr>
 row;
         }
@@ -47,9 +42,6 @@ row;
 <thead>
 <tr>
 <th>name</th>
-<th>contacts</th>
-<th>messages</th>
-<th>deliveries</th>
 </tr>
 </thead>
 <tbody>

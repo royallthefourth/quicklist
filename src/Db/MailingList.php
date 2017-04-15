@@ -232,6 +232,20 @@ WHERE LC.list_id = ?
     }
 }
 
+function paginatedLists(DataObject $db, int $page = 1, int $perPage = 10): iterable
+{
+    $stmt = $db
+        ->prepare('SELECT
+        L.id AS id, L.name
+FROM lists L
+ORDER BY L.name ASC
+LIMIT ? OFFSET ?')
+        ->execute([$perPage, ($page - 1) * $perPage]);
+    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        yield $row;
+    }
+}
+
 function paginatedMessagesSentToList(DataObject $db, int $listId, int $page, int $perPage): iterable
 {
     $stmt = $db->prepare('SELECT DISTINCT M.id, subject
@@ -274,22 +288,4 @@ function setUnsub(DataObject $db, string $hash): void
     WHERE id = (SELECT list_contact_id
     FROM deliveries WHERE unsub_hash = ?)')
         ->execute([$hash]);
-}
-
-function summary(DataObject $db, int $page = 1, int $perPage = 10): iterable
-{
-    $stmt = $db
-        ->prepare('SELECT
-        L.id AS id, L.name, COUNT(LC.id) AS contacts, COUNT(M.id) AS messages, COUNT(D.id) AS deliveries
-FROM lists L
-LEFT JOIN list_contacts LC ON LC.list_id = L.id
-LEFT JOIN deliveries D ON D.list_contact_id = LC.id
-LEFT JOIN messages M ON M.id = D.message_id
-GROUP BY L.id, L.name
-ORDER BY L.name ASC
-LIMIT ? OFFSET ?')
-        ->execute([$perPage, ($page - 1) * $perPage]);
-    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-        yield $row;
-    }
 }

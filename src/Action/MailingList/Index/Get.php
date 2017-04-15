@@ -4,7 +4,7 @@ namespace RoyallTheFourth\QuickList\Action\MailingList\Index;
 
 use Psr\Http\Message\ResponseInterface;
 use RoyallTheFourth\QuickList\Action\ActionInterface;
-use function RoyallTheFourth\QuickList\Db\MailingList\summary;
+use function RoyallTheFourth\QuickList\Db\MailingList\paginatedLists;
 use function RoyallTheFourth\QuickList\Db\MailingList\count;
 use function RoyallTheFourth\QuickList\Layout\Partial\pagination;
 use RoyallTheFourth\QuickList\Layout\MailingList\Index;
@@ -30,7 +30,7 @@ final class Get implements ActionInterface
     {
         return new HtmlResponse(
             (new Index(
-                summary($this->db, $this->page, $this->perPage),
+                paginatedLists($this->db, $this->page, $this->perPage),
                 $this->webPrefix,
                 pagination($this->page, count($this->db), $this->perPage, "{$this->webPrefix}/list")
             ))->render()
