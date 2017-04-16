@@ -187,6 +187,7 @@ tr:hover {
 
 pre {
     background-color: gainsboro;
+    white-space: pre-wrap;
 }
 
 section {
