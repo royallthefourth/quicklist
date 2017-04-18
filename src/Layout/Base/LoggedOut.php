@@ -2,6 +2,7 @@
 
 namespace RoyallTheFourth\QuickList\Layout\Base;
 
+use function RoyallTheFourth\QuickList\Common\currentVersion;
 use function RoyallTheFourth\QuickList\Layout\Partial\flash;
 use RoyallTheFourth\QuickList\Layout\LayoutInterface;
 
@@ -22,6 +23,7 @@ final class LoggedOut implements LayoutInterface
 
     public function render(): string
     {
+        $version = currentVersion();
         unset($_SESSION['flash']);
         return <<<html
             <!doctype html>
@@ -43,7 +45,7 @@ final class LoggedOut implements LayoutInterface
 </main>
 <footer>
 <a href="https://quicklist.email">Quicklist</a> 
-<a href="https://github.com/royallthefourth/quicklist/blob/master/CHANGES.md">v1.0</a></footer>
+<a href="https://github.com/royallthefourth/quicklist/blob/master/CHANGES.md">v{$version}</a></footer>
 </header>
 </body>
 </head>

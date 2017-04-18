@@ -3,6 +3,7 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
+use function RoyallTheFourth\QuickList\Common\currentVersion;
 use RoyallTheFourth\QuickList\Console\Contact;
 use RoyallTheFourth\QuickList\Console\Delivery;
 use RoyallTheFourth\QuickList\Console\MailingList;
@@ -16,7 +17,7 @@ $config = RoyallTheFourth\QuickList\Common\config();
 $db = Db\Common\connection();
 $mailer = RoyallTheFourth\QuickList\Common\mailer($config);
 $timezone = new \DateTimeZone($config['default_timezone']);
-$app = new Application('quicklist', '1.0');
+$app = new Application('Quicklist', currentVersion());
 
 $app->add(new Contact\Add($db));
 $app->add(new Contact\AddBulk($db));

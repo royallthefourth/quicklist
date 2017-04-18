@@ -20,6 +20,11 @@ function config(): array
     return Yaml::parse(file_get_contents(__DIR__ . '/../config/config.yml'));
 }
 
+function currentVersion(): string
+{
+    return '1.0';
+}
+
 function mailer(array $config): \PHPMailer
 {
     $mailer = new \PHPMailer(true);
