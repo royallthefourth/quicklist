@@ -4,7 +4,6 @@
 require __DIR__ . '/vendor/autoload.php';
 
 use function RoyallTheFourth\QuickList\Common\currentVersion;
-use RoyallTheFourth\QuickList\Console\Contact;
 use RoyallTheFourth\QuickList\Console\Delivery;
 use RoyallTheFourth\QuickList\Console\MailingList;
 use RoyallTheFourth\QuickList\Console\Message;
@@ -19,13 +18,9 @@ $mailer = RoyallTheFourth\QuickList\Common\mailer($config);
 $timezone = new \DateTimeZone($config['default_timezone']);
 $app = new Application('Quicklist', currentVersion());
 
-$app->add(new Contact\Add($db));
-$app->add(new Contact\AddBulk($db));
-// these use the identifier "show" internally because "list" is reserved
-$app->add(new Contact\Show($db, $timezone));
-
 $app->add(new Delivery\Process($db, $config, $mailer));
 $app->add(new Delivery\Schedule($db, $timezone));
+// these use the identifier "show" internally because "list" is reserved
 $app->add(new Delivery\Show($db, $timezone));
 
 $app->add(new MailingList\Add($db));
