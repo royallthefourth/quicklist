@@ -32,16 +32,15 @@ final class Index implements LayoutInterface
         foreach ($this->messages as ['id' => $id, 'subject' => $subject, 'date_added' => $dateAdded]) {
             $dateAdded = localDate($dateAdded, $this->timezone);
             $rows .= <<<row
-<tr><td>{$id}</td><td><a href="{$this->webPrefix}/message/view/{$id}">{$subject}</a></td><td>{$dateAdded}</td></tr>
+<tr><td><a href="{$this->webPrefix}/message/view/{$id}">{$subject}</a></td><td>{$dateAdded}</td></tr>
 row;
         }
         $table = <<<table
-<h1>Messages</h1>
 <a href="{$this->webPrefix}/message/add">Add a new message</a>
 <table>
+<caption></caption>
 <thead>
 <tr>
-<th>id</th>
 <th>subject</th>
 <th>date added</th>
 </tr>

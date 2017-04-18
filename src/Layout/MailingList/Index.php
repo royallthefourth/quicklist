@@ -36,9 +36,9 @@ final class Index implements LayoutInterface
 row;
         }
         $table = <<<table
-<h1>Lists</h1>
-<a href="{$addList}">Add a list</a>
+<a href="{$addList}">Add a new list</a>
 <table>
+<caption>Lists</caption>
 <thead>
 <tr>
 <th>name</th>
