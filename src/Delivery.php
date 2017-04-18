@@ -29,8 +29,12 @@ function messageHash($item): string
 function process(DataObject $db, array $config, \PHPMailer $mailer): int
 {
     $count = 0;
+    $start = time();
     // gather up the number of unsent emails that can fit within the send limit
     foreach (fetchDue($db, $config['hourly_send_rate']) as $message) {
+        if (time() - $start > 55) {
+            break;
+        }
         $mailer->addAddress($message['email']);
         $mailer->Subject = $message['subject'];
         if (strlen($message['unsub_hash']) > 0) {

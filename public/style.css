@@ -82,6 +82,10 @@ header nav ul li {
     padding: 0;
 }
 
+header nav ul li:hover {
+    background-color: gainsboro;
+}
+
 header nav ul li a {
     display: block;
     text-align: center;
