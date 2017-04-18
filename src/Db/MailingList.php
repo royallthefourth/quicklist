@@ -144,7 +144,7 @@ AND LC.date_removed IS NULL')
 
 function countMessages(DataObject $db, int $listId): int
 {
-    return $db->prepare('SELECT COUNT(M.id)
+    return $db->prepare('SELECT COUNT(DISTINCT M.id)
 FROM lists L
 INNER JOIN list_contacts LC ON LC.list_id = L.id
 INNER JOIN deliveries D ON D.list_contact_id = LC.id
