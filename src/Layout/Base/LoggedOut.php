@@ -34,6 +34,7 @@ final class LoggedOut implements LayoutInterface
             <link rel="shortcut icon" href="/favicon.png" type="image/x-icon">
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
+            </head>
             <body>
             <header>
             quicklist
@@ -46,9 +47,7 @@ final class LoggedOut implements LayoutInterface
 <footer>
 <a href="https://quicklist.email">Quicklist</a> 
 <a href="https://github.com/royallthefourth/quicklist/blob/master/CHANGES.md">v{$version}</a></footer>
-</header>
 </body>
-</head>
 </html>
 html;
     }
