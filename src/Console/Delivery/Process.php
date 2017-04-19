@@ -2,6 +2,8 @@
 
 namespace RoyallTheFourth\QuickList\Console\Delivery;
 
+use function RoyallTheFourth\QuickList\Db\Delivery\fetchDue;
+use function RoyallTheFourth\QuickList\Db\Delivery\setDelivered;
 use RoyallTheFourth\QuickList\Delivery;
 use RoyallTheFourth\SmoothPdo\DataObject;
 use Symfony\Component\Console\Command\Command;
@@ -31,7 +33,16 @@ class Process extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $recipients = Delivery\process($this->db, $this->config, $this->mailer);
-        $output->writeln('Sent messages to ' . $recipients . ' recipients.');
+        $count = 0;
+        foreach (Delivery\process(
+            fetchDue($this->db, $this->config['hourly_send_rate']),
+            $this->config['site_domain'],
+            $this->config['web_prefix'],
+            $this->mailer
+        ) as $deliveryId) {
+            setDelivered($this->db, $deliveryId);
+            $count++;
+        }
+        $output->writeln('Sent messages to ' . $count . ' recipients.');
     }
 }

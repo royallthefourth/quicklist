@@ -2,9 +2,6 @@
 
 namespace RoyallTheFourth\QuickList\Delivery;
 
-use function RoyallTheFourth\QuickList\Db\Delivery\fetchDue;
-use function RoyallTheFourth\QuickList\Db\Delivery\setDelivered;
-use RoyallTheFourth\SmoothPdo\DataObject;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 function appendUnsubLink(string $body, string $hash, string $domain, string $prefix = ''): string
@@ -18,42 +15,43 @@ function messageHash($item): string
 }
 
 /**
- * Sends the next bunch of pending messages
+ * Sends the next bunch of pending deliveries
  *
- * @param DataObject $db
- * @param array $config
+ * @param iterable $deliveries
+ * @param string $siteDomain
+ * @param string $webPrefix
  * @param \PHPMailer $mailer
- * @return int Number of messages sent this round
+ * @return iterable The deliveryId of each message that succeeded
  * @throws \Exception
+ * @internal param array $config
  */
-function process(DataObject $db, array $config, \PHPMailer $mailer): int
+function process(iterable $deliveries, string $siteDomain, string $webPrefix, \PHPMailer $mailer): iterable
 {
     $count = 0;
     $start = time();
     // gather up the number of unsent emails that can fit within the send limit
-    foreach (fetchDue($db, $config['hourly_send_rate']) as $message) {
+    foreach ($deliveries as $delivery) {
         if (time() - $start > 55) {
             break;
         }
-        $mailer->addAddress($message['email']);
-        $mailer->Subject = $message['subject'];
-        if (strlen($message['unsub_hash']) > 0) {
+        $mailer->addAddress($delivery['email']);
+        $mailer->Subject = $delivery['subject'];
+        if (strlen($delivery['unsub_hash']) > 0) {
             $mailer->Body = appendUnsubLink(
-                $message['body'],
-                $message['unsub_hash'],
-                $config['site_domain'],
-                $config['web_prefix']
+                $delivery['body'],
+                $delivery['unsub_hash'],
+                $siteDomain,
+                $webPrefix
             );
         } else {
-            $mailer->Body = $message['body'];
+            $mailer->Body = $delivery['body'];
         }
 
         try {
             $mailer->send();
-            setDelivered($db, $message['id']);
-            $count++;
+            yield $delivery['id'];
         } catch (Exception $e) {
-            throw new \Exception('failed to send message', $e);
+            throw new \Exception('failed to send delivery', $e);
         }
         $mailer->clearAddresses();
     }
