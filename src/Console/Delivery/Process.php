@@ -36,7 +36,7 @@ class Process extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // a race condition exists where another process writes the lockfile right after this one check for it.
+        // a race condition exists where another process writes the lockfile right after this one checks for it.
         // extremely unliklely to happen in the real world.
         if (file_exists($this->lockFilePath)) {
             throw new \Exception('Delivery process already running.');
@@ -66,7 +66,7 @@ class Process extends Command
         } finally {
             unlink($this->lockFilePath);
         }
-        
+
         $output->writeln('Sent messages to ' . $count . ' recipients.');
     }
 }
