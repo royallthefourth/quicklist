@@ -27,7 +27,6 @@ function messageHash($item): string
  */
 function process(iterable $deliveries, string $siteDomain, string $webPrefix, \PHPMailer $mailer): iterable
 {
-    $count = 0;
     // gather up the number of unsent emails that can fit within the send limit
     foreach ($deliveries as $delivery) {
         $mailer->addAddress($delivery['email']);
@@ -51,8 +50,6 @@ function process(iterable $deliveries, string $siteDomain, string $webPrefix, \P
         }
         $mailer->clearAddresses();
     }
-
-    return $count;
 }
 
 function schedule(iterable $contacts, int $messageId, \DateTimeImmutable $sendDate): iterable
