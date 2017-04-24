@@ -115,6 +115,7 @@ function fetchDue(DataObject $db, int $hourlySendLimit): iterable
     INNER JOIN contacts C ON C.id = LC.contact_id
     INNER JOIN messages M ON M.id = D.message_id
     WHERE LC.date_unsubscribed IS NULL
+    AND LC.date_removed IS NULL
     AND D.date_scheduled < CURRENT_TIMESTAMP
     AND D.date_sent IS NULL
     AND D.date_canceled IS NULL

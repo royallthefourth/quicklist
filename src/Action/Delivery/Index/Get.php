@@ -35,7 +35,12 @@ final class Get implements ActionInterface
                 Db\Delivery\paginated($this->db, $this->perPage, $this->page),
                 $this->webPrefix,
                 $this->timezone,
-                pagination($this->page, Db\Delivery\count($this->db), $this->perPage, Route\Delivery\index($this->webPrefix, $this->page))
+                pagination(
+                    $this->page,
+                    Db\Delivery\count($this->db),
+                    $this->perPage,
+                    Route\Delivery\index($this->webPrefix, '')
+                )
             ))->render()
         );
     }

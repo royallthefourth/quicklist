@@ -267,7 +267,6 @@ function removeContact(DataObject $db, string $listName, string $email): void
      SET date_removed = CURRENT_TIMESTAMP
   WHERE list_id = (SELECT id FROM lists WHERE name = ?)
   AND contact_id = (SELECT id FROM contacts WHERE email = ?)
-  AND date_unsubscribed IS NOT NULL
   AND date_removed IS NULL
 ')
         ->execute([$listName, $email]);
