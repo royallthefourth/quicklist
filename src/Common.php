@@ -27,7 +27,7 @@ function currentVersion(): string
 
 function mailer(array $config): \PHPMailer
 {
-    $mailer = new \PHPMailer(true);
+    $mailer = new \PHPMailer();
     $mailer->isSMTP();
     $mailer->Host = implode(';', $config['smtp']['hosts']);
     $mailer->Username = $config['smtp']['user'];

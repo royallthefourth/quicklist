@@ -2,8 +2,6 @@
 
 namespace RoyallTheFourth\QuickList\Delivery;
 
-use Symfony\Component\Config\Definition\Exception\Exception;
-
 function appendUnsubLink(string $body, string $hash, string $domain, string $prefix = ''): string
 {
     return "{$body}\n\nIf you wish to unsubscribe, click here: https://{$domain}/{$prefix}unsubscribe/{$hash}";
@@ -21,7 +19,7 @@ function messageHash($item): string
  * @param string $siteDomain
  * @param string $webPrefix
  * @param \PHPMailer $mailer
- * @return iterable The deliveryId of each message that succeeded
+ * @return iterable The deliveryId of each message that was sent
  * @throws \Exception
  * @internal param array $config
  */
@@ -29,6 +27,7 @@ function process(iterable $deliveries, string $siteDomain, string $webPrefix, \P
 {
     // gather up the number of unsent emails that can fit within the send limit
     foreach ($deliveries as $delivery) {
+        $mailer->clearAddresses();
         $mailer->addAddress($delivery['email']);
         $mailer->Subject = $delivery['subject'];
         if (strlen($delivery['unsub_hash']) > 0) {
@@ -41,14 +40,8 @@ function process(iterable $deliveries, string $siteDomain, string $webPrefix, \P
         } else {
             $mailer->Body = $delivery['body'];
         }
-
-        try {
-            $mailer->send();
-            yield $delivery['id'];
-        } catch (Exception $e) {
-            throw new \Exception('failed to send delivery', $e);
-        }
-        $mailer->clearAddresses();
+        $mailer->send();
+        yield $delivery['id'];
     }
 }
 
