@@ -4,11 +4,10 @@ namespace RoyallTheFourth\QuickList\Action\Contact\Index;
 
 use Psr\Http\Message\ResponseInterface;
 use RoyallTheFourth\QuickList\Action\ActionInterface;
-use function RoyallTheFourth\QuickList\Db\Contact\paginated;
-use function RoyallTheFourth\QuickList\Db\Contact\count;
+use RoyallTheFourth\QuickList\Db;
 use function RoyallTheFourth\QuickList\Layout\Partial\pagination;
-use RoyallTheFourth\QuickList\Layout\Contact\Index;
-use RoyallTheFourth\QuickList\Route\Contact;
+use RoyallTheFourth\QuickList\Layout;
+use RoyallTheFourth\QuickList\Route;
 use RoyallTheFourth\SmoothPdo\DataObject;
 use Zend\Diactoros\Response\HtmlResponse;
 
@@ -32,11 +31,16 @@ final class Get implements ActionInterface
     public function execute(): ResponseInterface
     {
         return new HtmlResponse(
-            (new Index(
-                paginated($this->db, $this->page, $this->perPage),
+            (new Layout\Contact\Index(
+                Db\Contact\paginated($this->db, $this->page, $this->perPage),
                 $this->webPrefix,
                 $this->timezone,
-                pagination($this->page, count($this->db), $this->perPage, Contact\index($this->webPrefix, ''))
+                pagination(
+                    $this->page,
+                    Db\Contact\count($this->db),
+                    $this->perPage,
+                    Route\Contact\index($this->webPrefix, '')
+                )
             ))->render()
         );
     }

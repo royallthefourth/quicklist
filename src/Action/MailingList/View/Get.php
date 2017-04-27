@@ -6,7 +6,6 @@ use Psr\Http\Message\ResponseInterface;
 use RoyallTheFourth\QuickList\Action\ActionInterface;
 use function RoyallTheFourth\QuickList\Db\MailingList\countActiveContacts;
 use function RoyallTheFourth\QuickList\Db\MailingList\countMessages;
-use function RoyallTheFourth\QuickList\Db\MailingList\countSentDeliveries;
 use function RoyallTheFourth\QuickList\Db\MailingList\getName;
 use RoyallTheFourth\QuickList\Layout\MailingList\View;
 use RoyallTheFourth\SmoothPdo\DataObject;
