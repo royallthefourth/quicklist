@@ -4,33 +4,6 @@ namespace RoyallTheFourth\QuickList\Db\Contact;
 
 use RoyallTheFourth\SmoothPdo\DataObject;
 
-function add(\PDO $db, string $email): void
-{
-    $db->prepare('INSERT OR IGNORE INTO contacts(email) VALUES (?)')
-        ->execute([$email]);
-}
-
-function addBulk(DataObject $db, iterable $emails): int
-{
-    $count = 0;
-    $db->beginTransaction();
-    $stmt = $db->prepare('INSERT OR IGNORE INTO contacts(email) VALUES(?)');
-    foreach ($emails as $email) {
-        $stmt->execute([$email]);
-        $count++;
-    }
-    $db->commit();
-    return $count;
-}
-
-function all(DataObject $db): iterable
-{
-    $stmt = $db->query('SELECT * FROM contacts');
-    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-        yield $row;
-    }
-}
-
 function count(DataObject $db): int
 {
     return $db->query('SELECT COUNT(id) FROM contacts')->fetch(\PDO::FETCH_NUM)[0];
@@ -54,5 +27,17 @@ LIMIT ? OFFSET ?')
 
     while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
         yield $row;
+    }
+}
+
+function removeBulk(DataObject $db, iterable $emails): void
+{
+    $stmt = $db->prepare('UPDATE list_contacts
+    SET date_removed = CURRENT_TIMESTAMP
+    WHERE contact_id = (SELECT id FROM contacts WHERE email LIKE ?)
+    AND date_removed IS NULL');
+
+    foreach ($emails as $email) {
+        $stmt->execute([$email]);
     }
 }

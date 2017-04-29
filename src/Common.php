@@ -67,7 +67,7 @@ function onlyValidEmails(iterable $emails): iterable
     }
 }
 
-function readEmailsFromConsole(): iterable
+function readEmailsFromConsole(): \Generator
 {
     while ($email = trim(fgets(STDIN))) {
         if (Validator::email()->validate($email)) {
