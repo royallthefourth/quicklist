@@ -31,8 +31,6 @@
             "RoyallTheFourth\\QuickList\\": "src"
         },
         "files": [
-            "src/Db/Common.php",
-            "src/Db/Contact.php",
             "src/Db/Delivery.php",
             "src/Db/MailingList.php",
             "src/Db/Message.php",

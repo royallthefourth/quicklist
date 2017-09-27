@@ -6,7 +6,7 @@ use RoyallTheFourth\QuickList\Db;
 
 session_start();
 $config = RoyallTheFourth\QuickList\Common\config();
-$db = Db\Common\connection();
+$db = Db\Common::connection();
 $request = \Zend\Diactoros\ServerRequestFactory::fromGlobals();
 
 $deps = [

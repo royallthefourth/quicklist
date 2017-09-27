@@ -1,10 +1,12 @@
 <?php
 
-namespace RoyallTheFourth\QuickList\Db\Common;
+namespace RoyallTheFourth\QuickList\Db;
 
 use RoyallTheFourth\SmoothPdo\DataObject;
 
-function connection(): DataObject
-{
-    return new DataObject('sqlite:' . __DIR__ . '../../../config/quicklist.db');
+final class Common {
+    public static function connection(): DataObject
+    {
+        return new DataObject('sqlite:' . __DIR__ . '../../../config/quicklist.db');
+    }
 }

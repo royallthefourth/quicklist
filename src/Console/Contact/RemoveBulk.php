@@ -3,7 +3,7 @@
 namespace RoyallTheFourth\QuickList\Console\Contact;
 
 use function RoyallTheFourth\QuickList\Common\readEmailsFromConsole;
-use function RoyallTheFourth\QuickList\Db\Contact\removeBulk;
+use RoyallTheFourth\QuickList\Db\Contact;
 use RoyallTheFourth\SmoothPdo\DataObject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,6 +29,6 @@ class RemoveBulk extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Enter emails, one per line:');
-        removeBulk($this->db, readEmailsFromConsole());
+        Contact::removeBulk($this->db, readEmailsFromConsole());
     }
 }

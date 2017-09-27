@@ -32,12 +32,12 @@ final class Get implements ActionInterface
     {
         return new HtmlResponse(
             (new Layout\Contact\Index(
-                Db\Contact\paginated($this->db, $this->page, $this->perPage),
+                Db\Contact::paginated($this->db, $this->page, $this->perPage),
                 $this->webPrefix,
                 $this->timezone,
                 pagination(
                     $this->page,
-                    Db\Contact\count($this->db),
+                    Db\Contact::count($this->db),
                     $this->perPage,
                     Route\Contact\index($this->webPrefix, '')
                 )
