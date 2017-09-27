@@ -36,7 +36,7 @@ function mailer(array $config): \PHPMailer
     $mailer->SMTPAuth = true;
     $mailer->SMTPKeepAlive = true;
     $mailer->Port = $config['smtp']['port'];
-    $mailer->setFrom($config['from']);
+    $mailer->setFrom($config['from'], $config['from_name']);
     return $mailer;
 }
 

@@ -9,5 +9,6 @@ smtp:
 hourly_send_rate: 20
 site_domain: example.com
 from: newsletter@example.com
+from_name: Example Sender
 web_prefix: ''
 default_timezone: UTC # see list: http://php.net/manual/en/timezones.php
