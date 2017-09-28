@@ -14,7 +14,7 @@ use Symfony\Component\Console\Application;
 
 $config = RoyallTheFourth\QuickList\Common\config();
 
-$db = Db\Common\connection();
+$db = Db\Common::connection();
 $mailer = RoyallTheFourth\QuickList\Common\mailer($config);
 $timezone = new \DateTimeZone($config['default_timezone']);
 $app = new Application('Quicklist', currentVersion());
