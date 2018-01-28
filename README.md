@@ -1,6 +1,5 @@
 # Quicklist
 
-[![Join the chat at https://gitter.im/quicklist-email/Lobby](https://badges.gitter.im/quicklist-email/Lobby.svg)](https://gitter.im/quicklist-email/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Quicklist is a mailing list manager that's designed to be as straightforward as possible.
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/737d5138-bd54-4076-ab65-368343a0ab1e/mini.png)](https://insight.sensiolabs.com/projects/737d5138-bd54-4076-ab65-368343a0ab1e)
